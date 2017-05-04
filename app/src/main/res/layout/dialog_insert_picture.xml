@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="@string/insert_picture"
+        android:textColor="@color/colorPrimary"
+        android:paddingLeft="20dp"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_height="50dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="2dp" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:layout_height="120dp">
+        
+        <LinearLayout
+            android:id="@+id/ll_dialog_insert_picture_camera"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_layout_insert"
+            android:layout_height="0dp">
+            <ImageView
+                android:layout_width="50dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_camera"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:text="Take Photo"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_dialog_insert_picture_gallery"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_layout_insert"
+            android:layout_height="0dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/ic_choose_photo"
+                android:scaleType="center"
+                android:layout_height="match_parent" />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:text="Choose Photo"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

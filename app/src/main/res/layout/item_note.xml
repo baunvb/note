@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:padding="5dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/layout_item_note"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@color/colorAccent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:id="@+id/tv_item_title"
+                android:layout_width="match_parent"
+                android:text="Title"
+                android:maxLines="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_item_alarm"
+                android:layout_width="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_alarm"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_color"
+                android:layout_height="1dp" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_item_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="4dp"
+            android:text="@string/content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_height="80dp" />
+        <TextView
+            android:id="@+id/tv_item_date"
+            android:layout_width="match_parent"
+            android:gravity="end"
+            android:hint="date time"
+            android:textSize="15sp"
+            android:textStyle="italic"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:maxLevel="0">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item>
+                <selector xmlns:android="http://schemas.android.com/apk/res/android">
+                    <item
+                        android:state_pressed="true">
+                        <shape android:shape="oval">
+                            <solid android:color="@color/press"/>
+
+                        </shape>
+                    </item>
+
+                    <item>
+                        <shape android:shape="oval">
+                            <solid android:color="#00ffffff"/>
+
+                        </shape>
+                    </item>
+
+                </selector>
+            </item>
+            <item>
+                <bitmap
+                    android:src="@drawable/ic_alarm_false"
+                    android:gravity="center">
+                </bitmap>
+            </item>
+
+        </layer-list>
+    </item>
+
+    <item
+        android:maxLevel="1">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item>
+                <selector xmlns:android="http://schemas.android.com/apk/res/android">
+                    <item
+                        android:state_pressed="true">
+                        <shape android:shape="oval">
+                            <solid android:color="@color/press"/>
+                        </shape>
+                    </item>
+
+                    <item>
+                        <shape android:shape="oval">
+                            <solid android:color="#00ffffff"/>
+                        </shape>
+                    </item>
+
+                </selector>
+            </item>
+            <item>
+                <bitmap
+                    android:src="@drawable/ic_alarm_true"
+                    android:gravity="center">
+                </bitmap>
+            </item>
+
+        </layer-list>
+    </item>
+
+</level-list>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Note</string>
+    <string name="content">Nội dung</string>
+    <string name="title">Tiêu đề</string>
+    <string name="alarm">Alarm</string>
+    <string name="insert_picture">Insert Picture</string>
+    <string name="choose_color">Choose Color</string>
+</resources>

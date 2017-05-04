@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/actionbar_color">
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_button_left" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_share"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_delete"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/bg_button_right"
+            android:scaleType="fitXY"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

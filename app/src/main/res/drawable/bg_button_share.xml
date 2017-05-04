@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <selector xmlns:android="http://schemas.android.com/apk/res/android">
+            <item
+                android:state_pressed="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="#90CAF9"/>
+
+                </shape>
+            </item>
+
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/actionbar_color"/>
+
+                </shape>
+            </item>
+
+        </selector>
+    </item>
+    <item>
+        <bitmap
+            android:src="@drawable/ic_share"
+            android:gravity="center">
+        </bitmap>
+    </item>
+
+</layer-list>
