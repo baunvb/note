@@ -276,7 +276,6 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
                 isAlarm = false;
                 ivAlarm.setImageLevel(0);
                 break;
-
             case R.id.btn_edit_note_date_picker:
                 new DatePickerDialog(getActivity(),
                         date,
