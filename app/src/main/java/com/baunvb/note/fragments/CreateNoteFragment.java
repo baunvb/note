@@ -243,7 +243,6 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
 
     public ArrayList<byte[]> savePhoto(ArrayList<Bitmap> bitmaps) {
         ArrayList<byte[]> bytes = new ArrayList<byte[]>();
-
         for(Bitmap bitmap:bitmaps){
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.WEBP, 0, outputStream);
