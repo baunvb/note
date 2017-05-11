@@ -226,8 +226,6 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
     public ArrayList<String> savePhoto(ArrayList<String> bitmaps) {
         ArrayList<String> bytes = new ArrayList<String>();
         for(String bitmap:bitmaps){
-//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.WEBP, 0, outputStream);
             bytes.add(bitmap);
         }
         return bytes;
@@ -346,7 +344,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
 
     private void setDate() {
 
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.TAIWAN);
 
         tvDate.setText(sdf.format(myCalendar.getTime()));

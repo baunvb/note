@@ -245,10 +245,6 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
     public ArrayList<String> savePhoto(ArrayList<String> bitmaps) {
         ArrayList<String> bytes = new ArrayList<String>();
         for(String bitmap:bitmaps){
-            //ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            //bitmap.compress(Bitmap.CompressFormat.WEBP, 0, outputStream);
-            //bytes.add(outputStream.toByteArray());
-            //bytes.add(bitmap);
             bytes.add(bitmap);
         }
         return bytes;
@@ -356,13 +352,7 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
                 String selectedImageUri = data.getData().toString();
                 bmPhotos.add(selectedImageUri);
                 photoAdapter.notifyDataSetChanged();
-//                try {
-//                    Bitmap bmPhoto = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-//                    bmPhotos.add(bmPhoto);
-//                    photoAdapter.notifyDataSetChanged();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+
             }
         }
 
