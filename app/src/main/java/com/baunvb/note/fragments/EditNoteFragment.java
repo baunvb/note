@@ -192,7 +192,6 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
         bmPhotos.clear();
         if (photos != null){
             for (String photo : photos){
-                //Bitmap bmPhoto =  BitmapFactory.decodeByteArray(photo, 0, photo.length);
                 bmPhotos.add(photo);
             }
         }
