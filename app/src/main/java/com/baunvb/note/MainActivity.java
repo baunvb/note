@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content, createNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
-
     }
 
     public void showEditNoteFragment(){
