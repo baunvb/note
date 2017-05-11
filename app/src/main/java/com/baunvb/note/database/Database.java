@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Environment;
 
 import com.baunvb.note.item.Note;
@@ -97,7 +98,7 @@ public class Database {
         values.put(COLUMN_LIST_NOTE_TITLE, note.getTitle());
         values.put(COLUMN_LIST_NOTE_IS_ALARM, note.getAlarm());
         values.put(COLUMN_LIST_NOTE_TIME, note.getTime());
-        values.put(COLUMN_LIST_NOTE_PHOTO, gson.toJson(note.getPhoto(), new TypeToken<ArrayList<byte[]>>() {
+        values.put(COLUMN_LIST_NOTE_PHOTO, gson.toJson(note.getPhoto(), new TypeToken<ArrayList<Uri>>() {
         }.getType()));
 
         long id = sqLiteDatabase.insert(TABLE_NOTE_LIST, null, values);
@@ -115,7 +116,7 @@ public class Database {
         values.put(COLUMN_LIST_NOTE_TITLE, note.getTitle());
         values.put(COLUMN_LIST_NOTE_IS_ALARM, note.getAlarm());
         values.put(COLUMN_LIST_NOTE_TIME, note.getTime());
-        values.put(COLUMN_LIST_NOTE_PHOTO, gson.toJson(note.getPhoto(), new TypeToken<ArrayList<byte[]>>() {
+        values.put(COLUMN_LIST_NOTE_PHOTO, gson.toJson(note.getPhoto(), new TypeToken<ArrayList<String>>() {
         }.getType()));
 
         sqLiteDatabase.update(
@@ -173,7 +174,7 @@ public class Database {
             String title = cursor.getString(indexTitle);
             int isAlarm = cursor.getInt(indexIsAlarm);
             String time = cursor.getString(indexTime);
-            ArrayList<byte[]> photo = gson.fromJson(cursor.getString(indexPhoto), new TypeToken<ArrayList<byte[]>>() {
+            ArrayList<String> photo = gson.fromJson(cursor.getString(indexPhoto), new TypeToken<ArrayList<String>>() {
             }.getType());
             list.add(new Note(id, title, content, date, time, color, isAlarm, photo));
             cursor.moveToNext();

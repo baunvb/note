@@ -1,5 +1,7 @@
 package com.baunvb.note.item;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 
 /**
@@ -14,9 +16,9 @@ public class Note {
     private String color;
     private int alarm;
     private String time;
-    private ArrayList<byte[]> photo;
+    private ArrayList<String> photo;
 
-    public Note(int id, String title, String content, String date, String time, String color, int alarm, ArrayList<byte[]> photo) {
+    public Note(int id, String title, String content, String date, String time, String color, int alarm, ArrayList<String> photo) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -27,7 +29,7 @@ public class Note {
         this.photo = photo;
     }
 
-    public Note(String title, String content, String date, String time, String color, int alarm, ArrayList<byte[]> photo) {
+    public Note(String title, String content, String date, String time, String color, int alarm, ArrayList<String> photo) {
         this.title = title;
         this.content = content;
         this.date = date;
@@ -93,11 +95,11 @@ public class Note {
         this.time = time;
     }
 
-    public ArrayList<byte[]> getPhoto() {
+    public ArrayList<String> getPhoto() {
         return photo;
     }
 
-    public void setPhoto(ArrayList<byte[]> photo) {
+    public void setPhoto(ArrayList<String> photo) {
         this.photo = photo;
     }
 }

@@ -85,7 +85,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
 
     private Note currentNote;
     private int position;
-    private ArrayList<Bitmap> bmPhotos = new ArrayList<Bitmap>();
+    private ArrayList<String> bmPhotos = new ArrayList<String>();
     private RecyclerView lvPhoto;
     LinearLayoutManager layoutManager;
     PhotoAdapter photoAdapter;
@@ -113,7 +113,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         lvPhoto.setLayoutManager(layoutManager);
 
-        photoAdapter = new PhotoAdapter(bmPhotos);
+        photoAdapter = new PhotoAdapter(getActivity(),bmPhotos);
         lvPhoto.setAdapter(photoAdapter);
 
         edtContent = (EditText) view.findViewById(R.id.edt_edit_note_content);
@@ -188,12 +188,12 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
         layoutEditNote.setBackgroundColor(Color.parseColor(currentNote.getColor()));
         ivAlarm.setImageLevel(currentNote.getAlarm());
 
-        ArrayList<byte[]> photos = currentNote.getPhoto();
+        ArrayList<String> photos = currentNote.getPhoto();
         bmPhotos.clear();
         if (photos != null){
-            for (byte[] photo : photos){
-                Bitmap bmPhoto =  BitmapFactory.decodeByteArray(photo, 0, photo.length);
-                bmPhotos.add(bmPhoto);
+            for (String photo : photos){
+                //Bitmap bmPhoto =  BitmapFactory.decodeByteArray(photo, 0, photo.length);
+                bmPhotos.add(photo);
             }
         }
 
@@ -211,30 +211,25 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
        if (resultCode == Activity.RESULT_OK){
            if(requestCode == CAMERA_EDIT_REQUEST_CODE){
-               Bitmap bmPhoto = (Bitmap) data.getExtras().get("data");
-                bmPhotos.add(bmPhoto);
+               String bmPhoto = data.getData().toString();
+               bmPhotos.add(bmPhoto);
                photoAdapter.notifyDataSetChanged();
            }
            if (requestCode == GALLERY_EDIT_REQUEST_CODE){
-               Uri selectedImageUri = data.getData();
-               try {
-                   Bitmap bmPhoto = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                   bmPhotos.add(bmPhoto);
-                   photoAdapter.notifyDataSetChanged();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
+               String selectedImageUri = data.getData().toString();
+               bmPhotos.add(selectedImageUri);
+               photoAdapter.notifyDataSetChanged();
            }
        }
 
     }
 
-    public ArrayList<byte[]> savePhoto(ArrayList<Bitmap> bitmaps) {
-        ArrayList<byte[]> bytes = new ArrayList<byte[]>();
-        for(Bitmap bitmap:bitmaps){
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.WEBP, 0, outputStream);
-            bytes.add(outputStream.toByteArray());
+    public ArrayList<String> savePhoto(ArrayList<String> bitmaps) {
+        ArrayList<String> bytes = new ArrayList<String>();
+        for(String bitmap:bitmaps){
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.WEBP, 0, outputStream);
+            bytes.add(bitmap);
         }
         return bytes;
     }
@@ -410,12 +405,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
         currentNote.setColor(color);
         currentNote.setDate(tvDate.getText().toString());
         currentNote.setTime(tvTime.getText().toString());
-
-        ArrayList<byte[]> photos = new ArrayList<byte[]>();
-        if (bmPhotos.size()>0 ) {
-            photos = savePhoto(bmPhotos);
-        }
-        currentNote.setPhoto(photos);
+        currentNote.setPhoto(bmPhotos);
         String datex[] = tvDate.getText().toString().split("/");
         String timex[] = tvTime.getText().toString().split(":");
         if (isAlarm){

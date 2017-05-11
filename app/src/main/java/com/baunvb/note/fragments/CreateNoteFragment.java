@@ -43,6 +43,7 @@ import com.baunvb.note.item.Note;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -92,7 +93,7 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
     private int typeInsert;
     private String color = PINK;
     private boolean isAlarm;
-    private ArrayList<Bitmap> bmPhotos = new ArrayList<Bitmap>();
+    private ArrayList<String> bmPhotos = new ArrayList<String>();
     LinearLayoutManager layoutManager;
     PhotoAdapter photoAdapter;
 
@@ -132,7 +133,7 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         lvPhoto.setLayoutManager(layoutManager);
         bmPhotos.clear();
-        photoAdapter = new PhotoAdapter(bmPhotos);
+        photoAdapter = new PhotoAdapter(getActivity(), bmPhotos);
         lvPhoto.setAdapter(photoAdapter);
 
         edtContent = (EditText) view.findViewById(R.id.edt_create_note_content);
@@ -241,12 +242,14 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    public ArrayList<byte[]> savePhoto(ArrayList<Bitmap> bitmaps) {
-        ArrayList<byte[]> bytes = new ArrayList<byte[]>();
-        for(Bitmap bitmap:bitmaps){
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.WEBP, 0, outputStream);
-            bytes.add(outputStream.toByteArray());
+    public ArrayList<String> savePhoto(ArrayList<String> bitmaps) {
+        ArrayList<String> bytes = new ArrayList<String>();
+        for(String bitmap:bitmaps){
+            //ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            //bitmap.compress(Bitmap.CompressFormat.WEBP, 0, outputStream);
+            //bytes.add(outputStream.toByteArray());
+            //bytes.add(bitmap);
+            bytes.add(bitmap);
         }
         return bytes;
     }
@@ -258,7 +261,7 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
         String time = tvTime.getText().toString();
         int alarm = getAlarm();
 
-        ArrayList<byte[]> photos = null;
+        ArrayList<String> photos = null;
         if (bmPhotos.size()>0 ) {
             photos = savePhoto(bmPhotos);
         }
@@ -343,20 +346,23 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_REQUEST_CODE) {
-                Bitmap bmPhoto = (Bitmap) data.getExtras().get("data");
+                String bmPhoto = data.getData().toString();
+
                 bmPhotos.add(bmPhoto);
                 photoAdapter.notifyDataSetChanged();
             }
 
             if (requestCode == GALLERY_REQUEST_CODE) {
-                Uri selectedImageUri = data.getData();
-                try {
-                    Bitmap bmPhoto = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                    bmPhotos.add(bmPhoto);
-                    photoAdapter.notifyDataSetChanged();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String selectedImageUri = data.getData().toString();
+                bmPhotos.add(selectedImageUri);
+                photoAdapter.notifyDataSetChanged();
+//                try {
+//                    Bitmap bmPhoto = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+//                    bmPhotos.add(bmPhoto);
+//                    photoAdapter.notifyDataSetChanged();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
 
