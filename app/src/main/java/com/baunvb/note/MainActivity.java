@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         database = new Database(this);
         showListNoteFragment();
         connectService();
-        requestPermission();
+        //requestPermission();
     }
 
     public void showListNoteFragment() {
