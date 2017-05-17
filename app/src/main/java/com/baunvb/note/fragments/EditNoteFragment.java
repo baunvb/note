@@ -24,11 +24,6 @@ public class EditNoteFragment extends FormNoteFragment{
     private ImageView ivShare;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected int getLayout() {
         return R.layout.fragment_edit_note;
     }
@@ -72,10 +67,10 @@ public class EditNoteFragment extends FormNoteFragment{
         ivAlarm.setImageLevel(currentNote.getAlarm());
 
         ArrayList<String> photos = currentNote.getPhoto();
-        bmPhotos.clear();
+        this.photos.clear();
         if (photos != null){
             for (String photo : photos){
-                bmPhotos.add(photo);
+                this.photos.add(photo);
             }
         }
 
@@ -85,6 +80,7 @@ public class EditNoteFragment extends FormNoteFragment{
             isAlarm = false;
         }
 
+        layoutShowDateTime.setVisibility(View.VISIBLE);
         tvDate.setText(currentNote.getDate());
         tvTime.setText(currentNote.getTime());
     }
@@ -98,7 +94,7 @@ public class EditNoteFragment extends FormNoteFragment{
         currentNote.setColor(color);
         currentNote.setDate(tvDate.getText().toString());
         currentNote.setTime(tvTime.getText().toString());
-        currentNote.setPhoto(bmPhotos);
+        currentNote.setPhoto(photos);
         String datex[] = tvDate.getText().toString().split("/");
         String timex[] = tvTime.getText().toString().split(":");
         if (isAlarm){
@@ -124,14 +120,14 @@ public class EditNoteFragment extends FormNoteFragment{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_left:
-                updateNote();
+                saveNote();
                 if (position > 0){
                     position--;
                 }
                 fillData();
                 break;
             case R.id.iv_right:
-                updateNote();
+                saveNote();
                 if (position < (listNote.size()-1)){
                     position++;
                 }

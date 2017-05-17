@@ -81,7 +81,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
 
     protected String color = PINK;
     protected boolean isAlarm;
-    protected ArrayList<String> bmPhotos = new ArrayList<String>();
+    protected ArrayList<String> photos = new ArrayList<String>();
     protected LinearLayoutManager layoutManager;
     protected PhotoAdapter photoAdapter;
 
@@ -125,8 +125,8 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         lvPhoto.setLayoutManager(layoutManager);
-        bmPhotos.clear();
-        photoAdapter = new PhotoAdapter(getActivity(), bmPhotos);
+        photos.clear();
+        photoAdapter = new PhotoAdapter(getActivity(), photos);
         lvPhoto.setAdapter(photoAdapter);
 
         edtContent = (EditText) view.findViewById(R.id.edt_create_note_content);
@@ -256,7 +256,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         currentNote.setColor(color);
         currentNote.setDate(tvDate.getText().toString());
         currentNote.setTime(tvTime.getText().toString());
-        currentNote.setPhoto(bmPhotos);
+        currentNote.setPhoto(photos);
         String datex[] = tvDate.getText().toString().split("/");
         String timex[] = tvTime.getText().toString().split(":");
         if (isAlarm){
@@ -371,13 +371,13 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
             if (requestCode == CAMERA_REQUEST_CODE) {
                 String bmPhoto = data.getData().toString();
 
-                bmPhotos.add(bmPhoto);
+                photos.add(bmPhoto);
                 photoAdapter.notifyDataSetChanged();
             }
 
             if (requestCode == GALLERY_REQUEST_CODE) {
                 String selectedImageUri = data.getData().toString();
-                bmPhotos.add(selectedImageUri);
+                photos.add(selectedImageUri);
                 photoAdapter.notifyDataSetChanged();
 
             }

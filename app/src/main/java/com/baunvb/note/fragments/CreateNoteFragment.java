@@ -4,12 +4,9 @@ package com.baunvb.note.fragments;
  * Created by Baunvb on 4/17/2017.
  */
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
@@ -18,11 +15,6 @@ import com.baunvb.note.item.Note;
 import java.util.ArrayList;
 
 public class CreateNoteFragment extends FormNoteFragment{
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected int getLayout() {
@@ -42,8 +34,8 @@ public class CreateNoteFragment extends FormNoteFragment{
         int alarm = getAlarm();
 
         ArrayList<String> photos = null;
-        if (bmPhotos.size()>0 ) {
-            photos = savePhoto(bmPhotos);
+        if (this.photos.size()>0 ) {
+            photos = savePhoto(this.photos);
         }
         id = (int) database.insert(new Note(title, content, date, time, color, alarm, photos));
         String datex[] = date.split("/");
