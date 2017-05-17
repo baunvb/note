@@ -96,7 +96,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
     }
 
     protected abstract int getLayout();
@@ -109,7 +109,12 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         return view;
     }
 
-   protected abstract void fillData();
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    protected abstract void fillData();
 
     public void initViews() {
         isAlarm = false;

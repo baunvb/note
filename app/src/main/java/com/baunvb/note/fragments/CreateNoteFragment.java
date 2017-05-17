@@ -18,6 +18,12 @@ import com.baunvb.note.item.Note;
 import java.util.ArrayList;
 
 public class CreateNoteFragment extends FormNoteFragment{
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_create_note;

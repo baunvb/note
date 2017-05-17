@@ -6,6 +6,8 @@ package com.baunvb.note.fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,6 +22,11 @@ public class EditNoteFragment extends FormNoteFragment{
     private ImageView ivNext;
     private ImageView ivDelete;
     private ImageView ivShare;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected int getLayout() {

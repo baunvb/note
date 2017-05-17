@@ -62,9 +62,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         database = new Database(this);
-        showListNoteFragment();
+        if (null == savedInstanceState){
+            showListNoteFragment();
+        }
+        //showListNoteFragment();
         connectService();
-        //requestPermission();
+        requestPermission();
     }
 
     public void showListNoteFragment() {
