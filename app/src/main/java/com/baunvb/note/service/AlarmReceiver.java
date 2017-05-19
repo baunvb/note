@@ -26,8 +26,5 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
     }
-    public void abortdReceiver(){
-        abortBroadcast();
-    }
 
 }

@@ -1,6 +1,7 @@
 package com.baunvb.note.fragments;
 
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -56,7 +57,12 @@ public class ListNoteFragment extends Fragment implements View.OnClickListener, 
         adapter.setListener(this);
 
         rvListNote = (RecyclerView) view.findViewById(R.id.rv_list_note);
-        rvListNote.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        int orient = getResources().getConfiguration().orientation;
+        if (orient == Configuration.ORIENTATION_LANDSCAPE){
+            rvListNote.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        } else {
+            rvListNote.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        }
         rvListNote.setAdapter(adapter);
 
         ivAdd = (ImageView) view.findViewById(R.id.iv_list_note_add);

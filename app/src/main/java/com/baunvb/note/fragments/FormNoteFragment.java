@@ -248,27 +248,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         AlertDialog alert = builder.create();
         alert.show();
     }
-    public int updateNote(){
-        int id = currentNote.getId();
-        currentNote.setAlarm(getAlarm());
-        currentNote.setTitle(edtTitle.getText().toString());
-        currentNote.setContent(edtContent.getText().toString());
-        currentNote.setColor(color);
-        currentNote.setDate(tvDate.getText().toString());
-        currentNote.setTime(tvTime.getText().toString());
-        currentNote.setPhoto(photos);
-        String datex[] = tvDate.getText().toString().split("/");
-        String timex[] = tvTime.getText().toString().split(":");
-        if (isAlarm){
-            ((MainActivity)getActivity()).alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
-                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]),Integer.parseInt(timex[0]),
-                    Integer.parseInt(timex[1]));
-        }
-
-        database.update(currentNote);
-        return id;
-    }
-
+    
     private void closeAlarm() {
         layoutShowDateTime.setVisibility(View.INVISIBLE);
         isAlarm = false;

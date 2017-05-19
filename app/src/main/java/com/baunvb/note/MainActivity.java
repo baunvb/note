@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         createNoteFragment = new CreateNoteFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, createNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
                 .commit();
     }
 
