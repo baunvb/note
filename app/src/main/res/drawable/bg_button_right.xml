@@ -16,7 +16,7 @@
             </item>
             <item>
                 <bitmap
-                    android:src="@drawable/ic_right_invisible"
+                    android:src="@drawable/ic_action_next_disenable_item"
                     android:gravity="center">
                 </bitmap>
             </item>
@@ -49,7 +49,7 @@
             </item>
             <item>
                 <bitmap
-                    android:src="@drawable/ic_right"
+                    android:src="@drawable/ic_action_next_item"
                     android:gravity="center">
                 </bitmap>
             </item>

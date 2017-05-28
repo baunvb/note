@@ -21,7 +21,7 @@
     </item>
     <item>
         <bitmap
-            android:src="@drawable/ic_save"
+            android:src="@drawable/ic_action_accept"
             android:gravity="center">
         </bitmap>
     </item>

@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.view.menu.MenuView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -29,6 +33,12 @@ public class EditNoteFragment extends FormNoteFragment{
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void initViews() {
         ivPrevious = (ImageView) view.findViewById(R.id.iv_left);
         ivPrevious.setOnClickListener(this);
@@ -39,6 +49,8 @@ public class EditNoteFragment extends FormNoteFragment{
         ivShare = (ImageView) view.findViewById(R.id.iv_share);
         ivShare.setOnClickListener(this);
         super.initViews();
+        ivMore.setVisibility(View.VISIBLE);
+        ivMore.setOnClickListener(this);
     }
 
     @Override
@@ -86,6 +98,12 @@ public class EditNoteFragment extends FormNoteFragment{
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.add, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     protected int saveNote() {
         int id = currentNote.getId();
         currentNote.setAlarm(getAlarm());
@@ -119,6 +137,8 @@ public class EditNoteFragment extends FormNoteFragment{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.iv_create_note_more:
+                break;
             case R.id.iv_left:
                 saveNote();
                 if (position > 0){

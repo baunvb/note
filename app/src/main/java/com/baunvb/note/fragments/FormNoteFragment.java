@@ -13,6 +13,8 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
@@ -56,6 +59,8 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     public static final int GALLERY_REQUEST_CODE = 3;
 
     protected View view;
+    protected LinearLayout llBack;
+    protected ImageView ivMore;
     protected ImageView ivCamera;
     protected ImageView ivColor;
     protected ImageView ivSave;
@@ -67,6 +72,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
 
     protected EditText edtTitle;
     protected EditText edtContent;
+    protected TextView tvItemNote;
 
     protected Button btnDatePicker, btnTimePicker;
     protected Button btnCloseAlarm;
@@ -88,96 +94,33 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     protected Calendar myCalendar;
 
     protected int id;
+    DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
 
-    public int getIdNote() {
-        return id;
-    }
+        @Override
+        public void onDateSet(DatePicker view, int year, int PhotoOfYear,
+                              int dayOfPhoto) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, PhotoOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfPhoto);
+            setDate();
+        }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
-    protected abstract int getLayout();
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(getLayout(), null);
-        initViews();
-        return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    protected abstract void fillData();
-
-    public void initViews() {
-        isAlarm = false;
-        myCalendar = Calendar.getInstance();
-        database = new Database(getActivity());
-
-        lvPhoto = (RecyclerView) view.findViewById(R.id.lvPhoto);
-        layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        lvPhoto.setLayoutManager(layoutManager);
-        photos.clear();
-        photoAdapter = new PhotoAdapter(getActivity(), photos);
-        lvPhoto.setAdapter(photoAdapter);
-
-        edtContent = (EditText) view.findViewById(R.id.edt_create_note_content);
-        edtContent.setText("");
-        edtTitle = (EditText) view.findViewById(R.id.edt_create_note_title);
-        edtTitle.setText("");
-
-        ivCamera = (ImageView) view.findViewById(R.id.iv_create_note_camera);
-
-        ivCamera.setOnClickListener(listener);
-
-        ivColor = (ImageView) view.findViewById(R.id.iv_create_note_color);
-        ivColor.setOnClickListener(listener);
-
-        ivSave = (ImageView) view.findViewById(R.id.iv_create_note_save);
-        ivSave.setOnClickListener(listener);
-
-        tvDate = (TextView) view.findViewById(R.id.tv_create_note_date);
-        tvDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-        tvTime = (TextView) view.findViewById(R.id.tv_create_note_time);
-        tvTime.setText(new SimpleDateFormat("HH:mm").format(new Date()));
-        tvAlarm = (TextView) view.findViewById(R.id.tv_create_note_alarm);
-
-        ivAlarm = (ImageView) view.findViewById(R.id.iv_create_note_open_alarm);
-        ivAlarm.setOnClickListener(listener);
-        ivAlarm.setImageLevel(0);
-
-        btnCloseAlarm = (Button) view.findViewById(R.id.btn_create_note_close_alarm);
-        btnCloseAlarm.setOnClickListener(listener);
-
-        btnDatePicker = (Button) view.findViewById(R.id.btn_create_note_date_picker);
-        btnDatePicker.setOnClickListener(listener);
-
-        btnTimePicker = (Button) view.findViewById(R.id.btn_create_note_time_picker);
-        btnTimePicker.setOnClickListener(listener);
-
-        layoutShowDateTime = (LinearLayout) view.findViewById(R.id.layout_create_note_show_date_time);
-        layoutShowDateTime.setVisibility(View.INVISIBLE);
-
-        layoutCreateNote = (LinearLayout) view.findViewById(R.id.layout_create_note);
-        layoutCreateNote.setBackgroundColor(Color.parseColor(color));
-
-        position = ((MainActivity)getActivity()).getPosition();
-        photoAdapter.notifyDataSetChanged();
-        fillData();
-    }
-
+    };
+    TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            myCalendar.set(Calendar.HOUR, hour);
+            myCalendar.set(Calendar.MINUTE, minute);
+            setTime();
+        }
+    };
     protected View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.ll_back:
+                    Toast.makeText(getActivity(), "Back", Toast.LENGTH_SHORT).show();
+                    break;
                 case R.id.iv_create_note_camera:
                     InsertPictureDialog pictureDialog = new InsertPictureDialog(getActivity());
                     pictureDialog.setListener(FormNoteFragment.this);
@@ -224,9 +167,118 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
 
     };
 
+    public int getIdNote() {
+        return id;
+    }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
-    public void deleteNote(final int id){
+    protected abstract int getLayout();
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(getLayout(), null);
+        initViews();
+        return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    protected abstract void fillData();
+
+    public void initViews() {
+        isAlarm = false;
+        myCalendar = Calendar.getInstance();
+        database = new Database(getActivity());
+
+        lvPhoto = (RecyclerView) view.findViewById(R.id.lvPhoto);
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        lvPhoto.setLayoutManager(layoutManager);
+        photos.clear();
+        photoAdapter = new PhotoAdapter(getActivity(), photos);
+        lvPhoto.setAdapter(photoAdapter);
+
+        edtContent = (EditText) view.findViewById(R.id.edt_create_note_content);
+        edtContent.setText("");
+        edtTitle = (EditText) view.findViewById(R.id.edt_create_note_title);
+        edtTitle.setText("");
+        edtTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvItemNote.setText(s);
+                if (s.length() == 0) {
+                    tvItemNote.setText(getString(R.string.app_name));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        tvItemNote = (TextView) view.findViewById(R.id.title_item_note);
+
+        llBack = (LinearLayout) view.findViewById(R.id.ll_back);
+        llBack.setOnClickListener(listener);
+
+        ivCamera = (ImageView) view.findViewById(R.id.iv_create_note_camera);
+        ivCamera.setOnClickListener(listener);
+
+        ivColor = (ImageView) view.findViewById(R.id.iv_create_note_color);
+        ivColor.setOnClickListener(listener);
+
+        ivSave = (ImageView) view.findViewById(R.id.iv_create_note_save);
+        ivSave.setOnClickListener(listener);
+
+        ivMore = (ImageView) view.findViewById(R.id.iv_create_note_more);
+        ivMore.setVisibility(View.GONE);
+
+        tvDate = (TextView) view.findViewById(R.id.tv_create_note_date);
+        tvDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        tvTime = (TextView) view.findViewById(R.id.tv_create_note_time);
+        tvTime.setText(new SimpleDateFormat("HH:mm").format(new Date()));
+        tvAlarm = (TextView) view.findViewById(R.id.tv_create_note_alarm);
+
+        ivAlarm = (ImageView) view.findViewById(R.id.iv_create_note_open_alarm);
+        ivAlarm.setOnClickListener(listener);
+        ivAlarm.setImageLevel(0);
+
+        btnCloseAlarm = (Button) view.findViewById(R.id.btn_create_note_close_alarm);
+        btnCloseAlarm.setOnClickListener(listener);
+
+        btnDatePicker = (Button) view.findViewById(R.id.btn_create_note_date_picker);
+        btnDatePicker.setOnClickListener(listener);
+
+        btnTimePicker = (Button) view.findViewById(R.id.btn_create_note_time_picker);
+        btnTimePicker.setOnClickListener(listener);
+
+        layoutShowDateTime = (LinearLayout) view.findViewById(R.id.layout_create_note_show_date_time);
+        layoutShowDateTime.setVisibility(View.INVISIBLE);
+
+        layoutCreateNote = (LinearLayout) view.findViewById(R.id.layout_create_note);
+        layoutCreateNote.setBackgroundColor(Color.parseColor(color));
+
+        position = ((MainActivity) getActivity()).getPosition();
+        photoAdapter.notifyDataSetChanged();
+        fillData();
+    }
+
+    public void deleteNote(final int id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Are you sure you want to delete this?")
                 .setCancelable(false)
@@ -234,21 +286,22 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
                 .setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                MainActivity mainActivity = (MainActivity)getActivity();
+                                MainActivity mainActivity = (MainActivity) getActivity();
                                 mainActivity.getDatabase().delete(id);
-                                ((MainActivity)getActivity()).showListNoteFragment();
+                                ((MainActivity) getActivity()).showListNoteFragment();
                                 dialog.dismiss();
                             }
-                        }).setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                        })
+                .setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
         AlertDialog alert = builder.create();
         alert.show();
     }
-    
+
     private void closeAlarm() {
         layoutShowDateTime.setVisibility(View.INVISIBLE);
         isAlarm = false;
@@ -270,35 +323,13 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
 
     public ArrayList<String> savePhoto(ArrayList<String> bitmaps) {
         ArrayList<String> bytes = new ArrayList<String>();
-        for(String bitmap:bitmaps){
+        for (String bitmap : bitmaps) {
             bytes.add(bitmap);
         }
         return bytes;
     }
 
     protected abstract int saveNote();
-
-    DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int PhotoOfYear,
-                              int dayOfPhoto) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, PhotoOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfPhoto);
-            setDate();
-        }
-
-    };
-
-    TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-            myCalendar.set(Calendar.HOUR, hour);
-            myCalendar.set(Calendar.MINUTE, minute);
-            setTime();
-        }
-    };
 
     private void setDate() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here

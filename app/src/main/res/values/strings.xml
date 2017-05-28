@@ -5,4 +5,5 @@
     <string name="alarm">Alarm</string>
     <string name="insert_picture">Insert Picture</string>
     <string name="choose_color">Choose Color</string>
+    <string name="add">Create new note</string>
 </resources>

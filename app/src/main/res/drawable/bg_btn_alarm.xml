@@ -24,7 +24,7 @@
             </item>
             <item>
                 <bitmap
-                    android:src="@drawable/ic_alarm_false"
+                    android:src="@drawable/ic_action_alarms"
                     android:gravity="center">
                 </bitmap>
             </item>
@@ -54,7 +54,7 @@
             </item>
             <item>
                 <bitmap
-                    android:src="@drawable/ic_alarm_true"
+                    android:src="@drawable/ic_action_alarms_select"
                     android:gravity="center">
                 </bitmap>
             </item>

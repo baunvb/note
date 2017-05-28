@@ -21,7 +21,7 @@
     </item>
     <item>
         <bitmap
-            android:src="@drawable/ic_color"
+            android:src="@drawable/ic_action_view_as_grid"
             android:gravity="center">
         </bitmap>
     </item>

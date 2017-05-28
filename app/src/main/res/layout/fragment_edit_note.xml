@@ -11,6 +11,6 @@
         android:layout_weight="1">
         <include layout="@layout/form_content_note"/>
     </LinearLayout>
-    <include layout="@layout/item_actionbar_bottom" />
+    <include layout="@layout/item_controlbar" />
 
 </LinearLayout>

@@ -16,6 +16,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.baunvb.note.database.Database;
@@ -78,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content, listNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
-
     }
+
 
     public void showCreateNoteFragment() {
         createNoteFragment = new CreateNoteFragment();
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         editNoteFragment = new EditNoteFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, editNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
                 .commit();
     }
 

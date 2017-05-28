@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -10,24 +12,36 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/actionbar_color">
 
-        <ImageView
-            android:layout_width="?android:attr/actionBarSize"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher" />
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bg_button_back"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_back"
+                android:scaleType="fitCenter"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_launcher" />
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/title_item_note"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:lines="1"
             android:gravity="center_vertical"
-            android:paddingLeft="10dp"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/iv_create_note_camera"
@@ -44,6 +58,11 @@
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
             android:background="@drawable/bg_button_save" />
+        <ImageView
+            android:id="@+id/iv_create_note_more"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_button_more"/>
     </LinearLayout>
 
 </LinearLayout>

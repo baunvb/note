@@ -21,7 +21,7 @@
     </item>
     <item>
         <bitmap
-            android:src="@drawable/ic_share"
+            android:src="@drawable/ic_action_share"
             android:gravity="center">
         </bitmap>
     </item>
