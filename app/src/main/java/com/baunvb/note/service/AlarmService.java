@@ -20,7 +20,6 @@ import com.baunvb.note.fragments.CreateNoteFragment;
 import java.util.Calendar;
 
 public class AlarmService extends Service {
-    private static final int MEDIA_NOTIFICATION_ID = 100;
     private NotificationManager alarmNotificationManager;
 
     private int id;
@@ -47,7 +46,7 @@ public class AlarmService extends Service {
             case "start":
                 CreateNoteFragment createNoteFragment = new CreateNoteFragment();
                 id = createNoteFragment.getIdNote();
-                sendNotification("You have a note today!", this, intent);
+                sendNotification(getString(R.string.notification_alarm), this, intent);
                 return Service.START_STICKY;
             case "stop":
                 stopService();
@@ -71,12 +70,12 @@ public class AlarmService extends Service {
 
         Notification notification = new NotificationCompat.Builder(context)
                 .setAutoCancel(false)
-                .setContentTitle("Note")
+                .setContentTitle(getString(R.string.app_name))
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
-                .addAction(R.drawable.ic_close, "Cancel", stopPI)
+                .addAction(R.drawable.ic_action_cancel, getString(R.string.cacel_label), stopPI)
                 .setContentText(msg)
                 .build();
 

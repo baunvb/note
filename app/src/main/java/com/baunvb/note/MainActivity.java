@@ -1,6 +1,7 @@
 package com.baunvb.note;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         if (null == savedInstanceState){
             showListNoteFragment();
         }
-        //showListNoteFragment();
         connectService();
         requestPermission();
     }
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         if (listNoteFragment == null) {
             listNoteFragment = new ListNoteFragment();
         }
-
         getFragmentManager().beginTransaction().replace(android.R.id.content, listNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
@@ -84,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void showCreateNoteFragment() {
-        createNoteFragment = new CreateNoteFragment();
+        if (createNoteFragment == null) {
+            createNoteFragment = new CreateNoteFragment();
+        }
         getFragmentManager().beginTransaction().replace(android.R.id.content, createNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
@@ -92,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showEditNoteFragment(){
-        editNoteFragment = new EditNoteFragment();
+        if (editNoteFragment == null){
+            editNoteFragment = new EditNoteFragment();
+        }
         getFragmentManager().beginTransaction().replace(android.R.id.content, editNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)

@@ -8,12 +8,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.view.menu.MenuView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
@@ -33,9 +34,9 @@ public class EditNoteFragment extends FormNoteFragment{
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+    public void onPause() {
+        super.onPause();
+        saveNote();
     }
 
     @Override
@@ -98,12 +99,6 @@ public class EditNoteFragment extends FormNoteFragment{
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     protected int saveNote() {
         int id = currentNote.getId();
         currentNote.setAlarm(getAlarm());
@@ -133,11 +128,30 @@ public class EditNoteFragment extends FormNoteFragment{
         startActivity(Intent.createChooser(sharingIntent, "Share with"));
     }
 
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(getActivity(), v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.add, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.add:
+                        ((MainActivity) getActivity()).showCreateNoteFragment();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_create_note_more:
+                showPopup(ivMore);
                 break;
             case R.id.iv_left:
                 saveNote();

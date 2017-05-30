@@ -5,14 +5,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
@@ -31,7 +29,7 @@ public class ListNoteFragment extends Fragment implements View.OnClickListener, 
     private RecyclerView rvListNote;
     private ArrayList<Note> listNote;
     private NoteAdapter adapter;
-
+    private TextView tvNoNote;
     private ImageView ivAdd;
 
     @Override
@@ -55,6 +53,12 @@ public class ListNoteFragment extends Fragment implements View.OnClickListener, 
         adapter = new NoteAdapter(getActivity(), listNote);
         adapter.notifyDataSetChanged();
         adapter.setListener(this);
+        tvNoNote = (TextView) view.findViewById(R.id.tv_no_note);
+        if (adapter.getItemCount() == 0){
+            tvNoNote.setVisibility(View.VISIBLE);
+        } else{
+            tvNoNote.setVisibility(View.GONE);
+        }
 
         rvListNote = (RecyclerView) view.findViewById(R.id.rv_list_note);
         int orient = getResources().getConfiguration().orientation;
@@ -67,7 +71,6 @@ public class ListNoteFragment extends Fragment implements View.OnClickListener, 
 
         ivAdd = (ImageView) view.findViewById(R.id.iv_list_note_add);
         ivAdd.setOnClickListener(this);
-
     }
 
     @Override

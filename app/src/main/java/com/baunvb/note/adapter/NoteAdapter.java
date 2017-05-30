@@ -12,8 +12,6 @@ import com.baunvb.note.R;
 import com.baunvb.note.fragments.CreateNoteFragment;
 import com.baunvb.note.item.Note;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
@@ -109,7 +107,7 @@ public class NoteAdapter extends RecyclerView.Adapter{
         }
     }
 
-    public interface OnItemNoteClickListener{
+    public interface OnItemNoteClickListener {
         void onClickListener(int position);
     }
 }

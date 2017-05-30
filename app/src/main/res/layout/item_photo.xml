@@ -4,7 +4,7 @@
     android:layout_height="100dp"
     android:layout_marginLeft="4dp">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_create_note_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

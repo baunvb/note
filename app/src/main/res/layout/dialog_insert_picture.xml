@@ -34,7 +34,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_camera"
+                android:src="@drawable/ic_action_camera_dark"
                 android:layout_height="match_parent" />
 
             <TextView
@@ -58,7 +58,7 @@
 
             <ImageView
                 android:layout_width="50dp"
-                android:src="@drawable/ic_choose_photo"
+                android:src="@drawable/ic_action_picture"
                 android:scaleType="center"
                 android:layout_height="match_parent" />
             <TextView

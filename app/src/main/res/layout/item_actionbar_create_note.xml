@@ -62,7 +62,8 @@
             android:id="@+id/iv_create_note_more"
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_button_more"/>
+            android:background="@drawable/bg_button_more"
+            android:onClick="showPopup"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -6,4 +6,11 @@
     <string name="insert_picture">Insert Picture</string>
     <string name="choose_color">Choose Color</string>
     <string name="add">Create new note</string>
+    <string name="no_note_label">No Note</string>
+    <string name="notification_alarm">You have a note today!</string>
+    <string name="cacel_label">Cancel</string>
+    <string name="notification_delete">Are you sure you want to delete this?</string>
+    <string name="yes_label">Yes</string>
+    <string name="delete_label">Confirm Delete</string>
+    <string name="no_label">No</string>
 </resources>

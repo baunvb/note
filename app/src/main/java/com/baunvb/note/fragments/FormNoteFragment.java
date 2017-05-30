@@ -7,8 +7,11 @@ import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,12 +32,18 @@ import android.widget.Toast;
 
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
+import com.baunvb.note.adapter.NoteAdapter;
 import com.baunvb.note.adapter.PhotoAdapter;
 import com.baunvb.note.database.Database;
 import com.baunvb.note.dialog.InsertPictureDialog;
 import com.baunvb.note.dialog.PickColorDialog;
 import com.baunvb.note.item.Note;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +54,9 @@ import java.util.Locale;
  * Created by Baunvb on 4/17/2017.
  */
 
-public abstract class FormNoteFragment extends Fragment implements View.OnClickListener, PickColorDialog.PickerColorDialogListener, InsertPictureDialog.InsertPictureDialogListener {
+public abstract class FormNoteFragment extends Fragment implements View.OnClickListener,
+        PickColorDialog.PickerColorDialogListener,
+        InsertPictureDialog.InsertPictureDialogListener {
 
     public static final String YELLOW = "#FFEB3B";
     public static final String ORANGE = "#FF9800";
@@ -119,7 +130,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.ll_back:
-                    Toast.makeText(getActivity(), "Back", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).showListNoteFragment();
                     break;
                 case R.id.iv_create_note_camera:
                     InsertPictureDialog pictureDialog = new InsertPictureDialog(getActivity());
@@ -280,10 +291,10 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
 
     public void deleteNote(final int id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Are you sure you want to delete this?")
+        builder.setMessage(getString(R.string.notification_delete))
                 .setCancelable(false)
-                .setTitle("Confirm Delete")
-                .setPositiveButton("Yes",
+                .setTitle(getString(R.string.delete_label))
+                .setPositiveButton(getString(R.string.yes_label),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -292,7 +303,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
                                 dialog.dismiss();
                             }
                         })
-                .setNegativeButton("No",
+                .setNegativeButton(getString(R.string.no_label),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
@@ -321,18 +332,18 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         }
     }
 
-    public ArrayList<String> savePhoto(ArrayList<String> bitmaps) {
-        ArrayList<String> bytes = new ArrayList<String>();
-        for (String bitmap : bitmaps) {
-            bytes.add(bitmap);
+    public ArrayList<String> savePhoto(ArrayList<String> paths) {
+        ArrayList<String> listPaths = new ArrayList<String>();
+        for (String path : paths) {
+            listPaths.add(path);
         }
-        return bytes;
+        return listPaths;
     }
 
     protected abstract int saveNote();
 
     private void setDate() {
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         tvDate.setText(sdf.format(myCalendar.getTime()));
     }
@@ -356,7 +367,6 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
             return 1;
     }
 
-
     @Override
     public void onInsertListener(int typeInsert) {
         switch (typeInsert) {
@@ -377,23 +387,75 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_REQUEST_CODE) {
-                String bmPhoto = data.getData().toString();
-
-                photos.add(bmPhoto);
+                Uri selectedImageUri = data.getData();
+                String newPath = saveToInternalStorage(selectedImageUri);
+                photos.add(newPath);
                 photoAdapter.notifyDataSetChanged();
             }
 
-            if (requestCode == GALLERY_REQUEST_CODE) {
-                String selectedImageUri = data.getData().toString();
-                photos.add(selectedImageUri);
-                photoAdapter.notifyDataSetChanged();
+            if (requestCode == GALLERY_REQUEST_CODE){
+                try {
+                    Uri selectedImageUri = data.getData();
+                    String newPath = saveToInternalStorage(selectedImageUri);
+                    //saveToInternalStorage(selectedImageUri);
+                    photos.add(newPath);
+                    photoAdapter.notifyDataSetChanged();
+                } catch (Exception e){
 
+                }
             }
         }
+    }
 
+    private String saveToInternalStorage(Uri uri) {
+        String path = getRealPathFromURI(uri);
+        File fileSrc = new File(path);
+        String fileName = path.substring(path.lastIndexOf("/")+1);
+        String pathImage = Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/" + Environment.DIRECTORY_PICTURES
+                + "/" + fileName;
+        File fileDes = new File(pathImage);
+        if (fileDes.exists()) {
+            fileDes.delete();
+        }
+        try {
+            fileDes.createNewFile();
+            copyFile(fileSrc, fileDes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pathImage;
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    private void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!sourceFile.exists()) {
+            return;
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+        source = new FileInputStream(sourceFile).getChannel();
+        destination = new FileOutputStream(destFile).getChannel();
+        if (destination != null && source != null) {
+            destination.transferFrom(source, 0, source.size());
+        }
+        if (source != null) {
+            source.close();
+        }
+        if (destination != null) {
+            destination.close();
+        }
     }
 
 }
