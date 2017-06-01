@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Environment;
 
-import com.baunvb.note.item.Note;
+import com.baunvb.note.model.Note;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

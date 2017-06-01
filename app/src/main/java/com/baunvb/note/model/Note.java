@@ -1,6 +1,4 @@
-package com.baunvb.note.item;
-
-import android.net.Uri;
+package com.baunvb.note.model;
 
 import java.util.ArrayList;
 

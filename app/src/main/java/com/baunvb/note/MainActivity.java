@@ -1,31 +1,24 @@
 package com.baunvb.note;
 
-import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.baunvb.note.database.Database;
 import com.baunvb.note.fragments.CreateNoteFragment;
 import com.baunvb.note.fragments.EditNoteFragment;
 import com.baunvb.note.fragments.ListNoteFragment;
-import com.baunvb.note.item.Note;
+import com.baunvb.note.model.Note;
 import com.baunvb.note.service.AlarmService;
 
 public class MainActivity extends AppCompatActivity {

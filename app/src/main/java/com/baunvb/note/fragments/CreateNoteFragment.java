@@ -4,13 +4,11 @@ package com.baunvb.note.fragments;
  * Created by Baunvb on 4/17/2017.
  */
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
-import com.baunvb.note.item.Note;
+import com.baunvb.note.model.Note;
 
 import java.util.ArrayList;
 

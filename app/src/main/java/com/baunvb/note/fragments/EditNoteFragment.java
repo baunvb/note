@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class EditNoteFragment extends FormNoteFragment{
@@ -79,10 +80,18 @@ public class EditNoteFragment extends FormNoteFragment{
         layoutCreateNote.setBackgroundColor(Color.parseColor(currentNote.getColor()));
         ivAlarm.setImageLevel(currentNote.getAlarm());
 
-        ArrayList<String> photos = currentNote.getPhoto();
+        ArrayList<String> currentPhotos = currentNote.getPhoto();
+        if (currentPhotos != null){
+            for (int i = 0; i < currentPhotos.size() -1; i++){
+                File imgFile = new File(currentPhotos.get(position));
+                if (!imgFile.exists()){
+                    currentPhotos.remove(i);
+                }
+            }
+        }
         this.photos.clear();
-        if (photos != null){
-            for (String photo : photos){
+        if (currentPhotos != null){
+            for (String photo : currentPhotos){
                 this.photos.add(photo);
             }
         }
@@ -123,9 +132,9 @@ public class EditNoteFragment extends FormNoteFragment{
     private void shareNote() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String data = "Tiêu đề: " + edtTitle.getText().toString() + "\n" + "Nội dung: "+edtContent.getText().toString();
+        String data = getString(R.string.title)+ ": " + edtTitle.getText().toString() + "\n" +getString(R.string.content)+": "+edtContent.getText().toString();
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, data );
-        startActivity(Intent.createChooser(sharingIntent, "Share with"));
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_label)));
     }
 
     public void showPopup(View v) {

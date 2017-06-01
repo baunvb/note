@@ -28,16 +28,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
-import com.baunvb.note.adapter.NoteAdapter;
 import com.baunvb.note.adapter.PhotoAdapter;
 import com.baunvb.note.database.Database;
 import com.baunvb.note.dialog.InsertPictureDialog;
 import com.baunvb.note.dialog.PickColorDialog;
-import com.baunvb.note.item.Note;
+import com.baunvb.note.model.Note;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -400,7 +398,6 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
                 try {
                     Uri selectedImageUri = data.getData();
                     String newPath = saveToInternalStorage(selectedImageUri);
-                    //saveToInternalStorage(selectedImageUri);
                     photos.add(newPath);
                     photoAdapter.notifyDataSetChanged();
                 } catch (Exception e){

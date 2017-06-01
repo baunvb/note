@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.baunvb.note.R;
 import com.baunvb.note.fragments.CreateNoteFragment;
-import com.baunvb.note.item.Note;
+import com.baunvb.note.model.Note;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,7 @@ public class NoteAdapter extends RecyclerView.Adapter{
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder,  int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder,  final int position) {
         final NoteHolder noteHolder = (NoteHolder) holder;
         Note note = listNote.get(position);
         noteHolder.tvTitle.setText(note.getTitle());
