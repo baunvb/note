@@ -96,12 +96,14 @@ public class EditNoteFragment extends FormNoteFragment{
             }
         }
 
-        if (currentNote.getAlarm() == 1){
-            isAlarm = true;
-        } else if(currentNote.getAlarm() == 0){
-            isAlarm = false;
-        }
+//        if (currentNote.getAlarm() == 1){
+//            isAlarm = true;
+//        } else if(currentNote.getAlarm() == 0){
+//            isAlarm = false;
+//        }
 
+        isAlarm = false;
+        ivAlarm.setImageLevel(0);
         layoutShowDateTime.setVisibility(View.VISIBLE);
         tvDate.setText(currentNote.getDate());
         tvTime.setText(currentNote.getTime());
