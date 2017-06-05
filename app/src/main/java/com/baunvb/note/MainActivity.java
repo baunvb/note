@@ -30,10 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private Note note;
     private int position;
 
-    //private ServiceConnection serviceConnection;
-    public AlarmService alarmService;
-    public static boolean isConnected;
-
     public void setPosition(int position) {
         this.position = position;
     }
@@ -58,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         if (null == savedInstanceState){
             showListNoteFragment();
         }
-        //connectService();
         requestPermission();
     }
 
@@ -95,40 +90,6 @@ public class MainActivity extends AppCompatActivity {
     public Database getDatabase() {
         return database;
     }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //connectService();
-    }
-
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        if (isConnected){
-//            unbindService(serviceConnection);
-//            isConnected = false;
-//        }
-//    }
-
-//    private ServiceConnection serviceConnection = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-//            alarmService = ((AlarmService.ServiceBinder) service).getService();
-//            isConnected = true;
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-//            isConnected = false;
-//        }
-//    };
-//
-//    public void connectService() {
-//        Intent intent = new Intent(this, AlarmService.class);
-//        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-//    }
 
     private void requestPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
