@@ -14,4 +14,5 @@
     <string name="delete_label">Confirm Delete</string>
     <string name="no_label">No</string>
     <string name="share_label">Share with</string>
+    <string name="request_permission_label">Please enable permission</string>
 </resources>

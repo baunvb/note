@@ -24,7 +24,7 @@ public class CreateNoteFragment extends FormNoteFragment{
     }
 
     @Override
-    protected int saveNote() {
+    public int saveNote() {
         String title = edtTitle.getText().toString();
         String content = edtContent.getText().toString();
         String date = tvDate.getText().toString();
@@ -39,7 +39,7 @@ public class CreateNoteFragment extends FormNoteFragment{
         String datex[] = date.split("/");
         String timex[] = time.split(":");
         if (isAlarm) {
-            ((MainActivity) getActivity()).alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
+            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
                     Integer.parseInt(datex[1]), Integer.parseInt(datex[2]), Integer.parseInt(timex[0]),
                     Integer.parseInt(timex[1]));
         }

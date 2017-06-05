@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.baunvb.note.R;
 import com.baunvb.note.fragments.CreateNoteFragment;
+import com.baunvb.note.fragments.FormNoteFragment;
 
 import java.util.Calendar;
 
@@ -41,10 +42,9 @@ public class AlarmService extends Service {
     @Override
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         switch (intent.getAction()) {
             case "start":
-                CreateNoteFragment createNoteFragment = new CreateNoteFragment();
+                FormNoteFragment createNoteFragment = new CreateNoteFragment();
                 id = createNoteFragment.getIdNote();
                 sendNotification(getString(R.string.notification_alarm), this, intent);
                 return Service.START_STICKY;
@@ -84,12 +84,15 @@ public class AlarmService extends Service {
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
-        ringtone = RingtoneManager.getRingtone(context, alarmUri);
+
+        if (ringtone == null){
+            ringtone = RingtoneManager.getRingtone(context, alarmUri);
+        }
         ringtone.play();
     }
 
     public void stopService() {
-        alarmNotificationManager.cancel(id);
+        alarmNotificationManager.cancelAll();
         ringtone.stop();
         ringtone = null;
     }
@@ -107,8 +110,6 @@ public class AlarmService extends Service {
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
-        manager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-
+        manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
-
 }

@@ -120,11 +120,10 @@ public class EditNoteFragment extends FormNoteFragment{
         String datex[] = tvDate.getText().toString().split("/");
         String timex[] = tvTime.getText().toString().split(":");
         if (isAlarm){
-            ((MainActivity)getActivity()).alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
+            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
                     Integer.parseInt(datex[1]), Integer.parseInt(datex[2]),Integer.parseInt(timex[0]),
                     Integer.parseInt(timex[1]));
         }
-
         database.update(currentNote);
         return id;
     }

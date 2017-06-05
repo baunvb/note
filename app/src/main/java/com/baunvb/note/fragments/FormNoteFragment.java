@@ -5,13 +5,17 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +40,7 @@ import com.baunvb.note.database.Database;
 import com.baunvb.note.dialog.InsertPictureDialog;
 import com.baunvb.note.dialog.PickColorDialog;
 import com.baunvb.note.model.Note;
+import com.baunvb.note.service.AlarmService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -103,6 +108,9 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     protected Calendar myCalendar;
 
     protected int id;
+
+    protected AlarmService alarmService;
+
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
 
         @Override
@@ -184,6 +192,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        connectService();
     }
 
     protected abstract int getLayout();
@@ -336,6 +345,35 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
             listPaths.add(path);
         }
         return listPaths;
+    }
+
+    private boolean isConnected;
+    private ServiceConnection serviceConnection;
+
+    public void connectService() {
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                alarmService = ((AlarmService.ServiceBinder) service).getService();
+                isConnected = true;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                isConnected = false;
+            }
+        };
+        Intent intent = new Intent(getActivity(), AlarmService.class);
+        getActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (isConnected){
+            getActivity().unbindService(serviceConnection);
+            isConnected = false;
+        }
     }
 
     protected abstract int saveNote();
