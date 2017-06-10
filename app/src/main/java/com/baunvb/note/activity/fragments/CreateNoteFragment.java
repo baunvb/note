@@ -31,18 +31,17 @@ public class CreateNoteFragment extends BaseFragment {
         int alarm = getAlarm();
 
         id = (int) database.insertNote(new Note(title, content, date, time, color, alarm));
-        Log.d("Insert Note ID ", id +"");
         for (int i = 0; i < this.photoPaths.size(); i++) {
             long id = database.insertPhoto(new Photo(this.id, photoPaths.get(i)));
         }
 
         String datex[] = date.split("/");
         String timex[] = time.split(":");
-//        if (isAlarm) {
-//            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
-//                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]), Integer.parseInt(timex[0]),
-//                    Integer.parseInt(timex[1]));
-//        }
+        if (isAlarm) {
+            setAlarmFire(id, Integer.parseInt(datex[0]),
+                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]), Integer.parseInt(timex[0]),
+                    Integer.parseInt(timex[1]));
+        }
         return id;
     }
 

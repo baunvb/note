@@ -1,9 +1,11 @@
 package com.baunvb.note.activity.fragments;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -40,6 +42,7 @@ import com.baunvb.note.custom.adapter.PhotoAdapter;
 import com.baunvb.note.custom.dialog.InsertPictureDialog;
 import com.baunvb.note.custom.dialog.PickColorDialog;
 import com.baunvb.note.db.DatabaseManager;
+import com.baunvb.note.service.AlarmReceiver;
 import com.baunvb.note.service.AlarmService;
 
 import java.io.File;
@@ -113,7 +116,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     protected int id;
 
-    protected AlarmService alarmService;
+    private AlarmManager alarmmanager;
+    private PendingIntent pendingIntent;
+    private Intent launchIntent;
 
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -187,8 +192,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         }
 
     };
-    private boolean isConnected;
-    private ServiceConnection serviceConnection;
 
     public int getIdNote() {
         return id;
@@ -197,7 +200,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //connectService();
+        alarmmanager = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
+        launchIntent = new Intent(getActivity(), AlarmReceiver.class);
     }
 
     protected abstract int getLayout();
@@ -332,7 +336,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 MainActivity mainActivity = (MainActivity) getActivity();
-                                mainActivity.getDatabase().deleteNote(id);
+                                database.deleteNote(id);
                                 ((MainActivity) getActivity()).showListNoteFragment();
                                 dialog.dismiss();
                             }
@@ -369,38 +373,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public ArrayList<String> savePhoto(ArrayList<String> paths) {
-        ArrayList<String> listPaths = new ArrayList<String>();
-        for (String path : paths) {
-            listPaths.add(path);
-        }
-        return listPaths;
-    }
-
-    public void connectService() {
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                alarmService = ((AlarmService.ServiceBinder) service).getService();
-                isConnected = true;
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                isConnected = false;
-            }
-        };
-        Intent intent = new Intent(getActivity(), AlarmService.class);
-        getActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
-
     @Override
     public void onStop() {
         super.onStop();
-        if (isConnected) {
-            getActivity().unbindService(serviceConnection);
-            isConnected = false;
-        }
     }
 
     protected abstract int saveNote();
@@ -455,7 +430,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             if (requestCode == CAMERA_REQUEST_CODE) {
                 Uri selectedImageUri = data.getData();
                 String newPath = saveToInternalStorage(selectedImageUri);
-                //photoPaths.add(new Photo(id, newPath));
                 photoPaths.add(newPath);
                 photoAdapter.notifyItemInserted(photoPaths.size()-1);
             }
@@ -464,7 +438,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                 try {
                     Uri selectedImageUri = data.getData();
                     String newPath = saveToInternalStorage(selectedImageUri);
-                    //photoPaths.add(new Photo(saveNote(), newPath));
                     photoPaths.add(newPath);
                     photoAdapter.notifyItemInserted(photoPaths.size()-1);
                 } catch (Exception e) {
@@ -519,6 +492,20 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         if (destination != null) {
             destination.close();
         }
+    }
+
+    public void setAlarmFire(int id, int day, int month, int year, int hour, int minute) {
+        pendingIntent = PendingIntent.getBroadcast(getActivity(), id, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.YEAR, year);
+        alarmmanager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
 }

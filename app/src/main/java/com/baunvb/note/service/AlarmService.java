@@ -1,6 +1,5 @@
 package com.baunvb.note.service;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
@@ -19,10 +17,8 @@ import com.baunvb.note.activity.fragments.CreateNoteFragment;
 import com.baunvb.note.activity.fragments.BaseFragment;
 import com.baunvb.note.utils.Constant;
 
-import java.util.Calendar;
-
 public class AlarmService extends Service {
-    private NotificationManager alarmNotificationManager;
+    private NotificationManager notificationManager;
 
     private int id;
 
@@ -31,17 +27,10 @@ public class AlarmService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new ServiceBinder();
-    }
-
-    public class ServiceBinder extends Binder {
-        public AlarmService getService() {
-            return AlarmService.this;
-        }
+        return null;
     }
 
     @Override
-
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getAction() == Constant.ACTION_START_SERVICE) {
             BaseFragment createNoteFragment = new CreateNoteFragment();
@@ -55,14 +44,14 @@ public class AlarmService extends Service {
             stopSelf();
             return Service.START_NOT_STICKY;
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_NOT_STICKY;
     }
 
     public void sendNotification(String msg, Context context, Intent intent) {
-        alarmNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        intent.setAction("stop");
+        intent.setAction(Constant.ACTION_STOP_SERVICE);
         PendingIntent stopPI = PendingIntent.getService(context, 0,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -77,7 +66,7 @@ public class AlarmService extends Service {
                 .setContentText(msg)
                 .build();
 
-        alarmNotificationManager.notify(id, notification);
+        notificationManager.notify(id, notification);
         alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -90,24 +79,9 @@ public class AlarmService extends Service {
     }
 
     public void stopService() {
-        alarmNotificationManager.cancelAll();
+        notificationManager.cancelAll();
         ringtone.stop();
         ringtone = null;
     }
 
-    public void setAlarmFire(int id, int day, int month, int year, int hour, int minute) {
-        AlarmManager manager = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
-        Intent launchIntent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, launchIntent, 0);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.MONTH, month - 1);
-        calendar.set(Calendar.YEAR, year);
-        manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-    }
 }

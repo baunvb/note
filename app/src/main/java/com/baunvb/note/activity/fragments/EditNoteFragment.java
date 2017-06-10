@@ -54,7 +54,7 @@ public class EditNoteFragment extends BaseFragment {
     @Override
     protected void fillData() {
         photoAdapter.notifyDataSetChanged();
-        listNote = ((MainActivity)getActivity()).getDatabase().getAllNotes();
+        listNote = database.getAllNotes();
         ivPrevious.setFocusable(true);
         ivPrevious.setImageLevel(1);
         ivNext.setFocusable(true);
@@ -111,11 +111,11 @@ public class EditNoteFragment extends BaseFragment {
         currentNote.setTime(tvTime.getText().toString());
         String datex[] = tvDate.getText().toString().split("/");
         String timex[] = tvTime.getText().toString().split(":");
-//        if (isAlarm){
-//            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
-//                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]),Integer.parseInt(timex[0]),
-//                    Integer.parseInt(timex[1]));
-//        }
+        if (isAlarm){
+            setAlarmFire(id, Integer.parseInt(datex[0]),
+                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]),Integer.parseInt(timex[0]),
+                    Integer.parseInt(timex[1]));
+        }
         database.updateNote(currentNote);
         database.deletePhoto(currentNote.getId());
         if (photoPaths != null){

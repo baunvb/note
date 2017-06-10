@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.baunvb.note.activity.activity.MainActivity;
 import com.baunvb.note.R;
 import com.baunvb.note.custom.adapter.NoteAdapter;
+import com.baunvb.note.db.DatabaseManager;
 import com.baunvb.note.model.Note;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
  */
 
 public class ListNoteFragment extends Fragment implements View.OnClickListener, NoteAdapter.OnItemNoteClickListener {
-    public static final String LIST_NOTE_FRAG_KEY = "list note fragment";
     private View view;
     private RecyclerView rvListNote;
     private ArrayList<Note> listNote;
@@ -47,8 +47,8 @@ public class ListNoteFragment extends Fragment implements View.OnClickListener, 
 
     private void initViews() {
         listNote = new ArrayList<>();
-        MainActivity mainActivity = (MainActivity)getActivity();
-        listNote = mainActivity.getDatabase().getAllNotes();
+        DatabaseManager database = new DatabaseManager(getActivity());
+        listNote = database.getAllNotes();
 
         adapter = new NoteAdapter(getActivity(), listNote);
         adapter.notifyDataSetChanged();

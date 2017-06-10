@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private ListNoteFragment mListNoteFragment;
     private CreateNoteFragment mCreateNoteFragment;
     private EditNoteFragment mEditNoteFragment;
-    //private DatabaseManager database;
     private com.baunvb.note.model.Note note;
     private int position;
 
@@ -44,11 +43,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //database = new DatabaseManager(this);
         if (null == savedInstanceState){
             showListNoteFragment();
         }
-        //requestPermission();
+        requestPermission();
     }
 
     public void showListNoteFragment() {
@@ -80,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
-
-//    public DatabaseManager getDatabase() {
-//        return database;
-//    }
 
     private void requestPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
