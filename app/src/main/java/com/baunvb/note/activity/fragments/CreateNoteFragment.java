@@ -1,18 +1,17 @@
-package com.baunvb.note.fragments;
+package com.baunvb.note.activity.fragments;
 
 /**
  * Created by Baunvb on 4/17/2017.
  */
 
+import android.util.Log;
 import android.view.View;
 
-import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
 import com.baunvb.note.model.Note;
+import com.baunvb.note.model.Photo;
 
-import java.util.ArrayList;
-
-public class CreateNoteFragment extends FormNoteFragment{
+public class CreateNoteFragment extends BaseFragment {
 
     @Override
     protected int getLayout() {
@@ -31,18 +30,19 @@ public class CreateNoteFragment extends FormNoteFragment{
         String time = tvTime.getText().toString();
         int alarm = getAlarm();
 
-        ArrayList<String> photos = null;
-        if (this.photos.size()>0 ) {
-            photos = savePhoto(this.photos);
+        id = (int) database.insertNote(new Note(title, content, date, time, color, alarm));
+        Log.d("Insert Note ID ", id +"");
+        for (int i = 0; i < this.photoPaths.size(); i++) {
+            long id = database.insertPhoto(new Photo(this.id, photoPaths.get(i)));
         }
-        id = (int) database.insert(new Note(title, content, date, time, color, alarm, photos));
+
         String datex[] = date.split("/");
         String timex[] = time.split(":");
-        if (isAlarm) {
-            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
-                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]), Integer.parseInt(timex[0]),
-                    Integer.parseInt(timex[1]));
-        }
+//        if (isAlarm) {
+//            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
+//                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]), Integer.parseInt(timex[0]),
+//                    Integer.parseInt(timex[1]));
+//        }
         return id;
     }
 

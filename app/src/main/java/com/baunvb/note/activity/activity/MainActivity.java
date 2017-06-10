@@ -1,33 +1,27 @@
-package com.baunvb.note;
+package com.baunvb.note.activity.activity;
 
 import android.app.FragmentTransaction;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.baunvb.note.database.Database;
-import com.baunvb.note.fragments.CreateNoteFragment;
-import com.baunvb.note.fragments.EditNoteFragment;
-import com.baunvb.note.fragments.ListNoteFragment;
-import com.baunvb.note.model.Note;
-import com.baunvb.note.service.AlarmService;
+import com.baunvb.note.R;
+import com.baunvb.note.db.DatabaseManager;
+import com.baunvb.note.activity.fragments.CreateNoteFragment;
+import com.baunvb.note.activity.fragments.EditNoteFragment;
+import com.baunvb.note.activity.fragments.ListNoteFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 1;
-    private ListNoteFragment listNoteFragment;
-    private CreateNoteFragment createNoteFragment;
-    private EditNoteFragment editNoteFragment;
-    private Database database;
-    private Note note;
+    private ListNoteFragment mListNoteFragment;
+    private CreateNoteFragment mCreateNoteFragment;
+    private EditNoteFragment mEditNoteFragment;
+    //private DatabaseManager database;
+    private com.baunvb.note.model.Note note;
     private int position;
 
     public void setPosition(int position) {
@@ -38,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
         return position;
     }
 
-    public void setNote(Note note) {
+    public void setNote(com.baunvb.note.model.Note note) {
         this.note = note;
     }
 
-    public Note getNote() {
+    public com.baunvb.note.model.Note getNote() {
         return note;
     }
 
@@ -50,46 +44,46 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        database = new Database(this);
+        //database = new DatabaseManager(this);
         if (null == savedInstanceState){
             showListNoteFragment();
         }
-        requestPermission();
+        //requestPermission();
     }
 
     public void showListNoteFragment() {
-        if (listNoteFragment == null) {
-            listNoteFragment = new ListNoteFragment();
+        if (mListNoteFragment == null) {
+            mListNoteFragment = new ListNoteFragment();
         }
-        getFragmentManager().beginTransaction().replace(android.R.id.content, listNoteFragment)
+        getFragmentManager().beginTransaction().replace(android.R.id.content, mListNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
+        mCreateNoteFragment = null;
+        mEditNoteFragment = null;
     }
 
 
     public void showCreateNoteFragment() {
-        if (createNoteFragment == null) {
-            createNoteFragment = new CreateNoteFragment();
+        if (mCreateNoteFragment == null) {
+            mCreateNoteFragment = new CreateNoteFragment();
         }
-        getFragmentManager().beginTransaction().replace(android.R.id.content, createNoteFragment)
+        getFragmentManager().beginTransaction().replace(android.R.id.content, mCreateNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null)
                 .commit();
     }
 
     public void showEditNoteFragment(){
-        if (editNoteFragment == null){
-            editNoteFragment = new EditNoteFragment();
+        if (mEditNoteFragment == null){
+            mEditNoteFragment = new EditNoteFragment();
         }
-        getFragmentManager().beginTransaction().replace(android.R.id.content, editNoteFragment)
+        getFragmentManager().beginTransaction().replace(android.R.id.content, mEditNoteFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null)
                 .commit();
     }
 
-    public Database getDatabase() {
-        return database;
-    }
+//    public DatabaseManager getDatabase() {
+//        return database;
+//    }
 
     private void requestPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

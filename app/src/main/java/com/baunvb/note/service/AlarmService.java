@@ -15,8 +15,9 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.baunvb.note.R;
-import com.baunvb.note.fragments.CreateNoteFragment;
-import com.baunvb.note.fragments.FormNoteFragment;
+import com.baunvb.note.activity.fragments.CreateNoteFragment;
+import com.baunvb.note.activity.fragments.BaseFragment;
+import com.baunvb.note.utils.Constant;
 
 import java.util.Calendar;
 
@@ -42,23 +43,20 @@ public class AlarmService extends Service {
     @Override
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        switch (intent.getAction()) {
-            case "start":
-                FormNoteFragment createNoteFragment = new CreateNoteFragment();
-                id = createNoteFragment.getIdNote();
-                sendNotification(getString(R.string.notification_alarm), this, intent);
-                return Service.START_STICKY;
-            case "stop":
-                stopService();
-                stopForeground(true);
-                stopSelf();
-                return Service.START_NOT_STICKY;
-            default:
-                return super.onStartCommand(intent, flags, startId);
+        if (intent.getAction() == Constant.ACTION_START_SERVICE) {
+            BaseFragment createNoteFragment = new CreateNoteFragment();
+            id = createNoteFragment.getIdNote();
+            sendNotification(getString(R.string.notification_alarm), this, intent);
+            return Service.START_STICKY;
         }
-
+        if (intent.getAction() == Constant.ACTION_STOP_SERVICE){
+            stopService();
+            stopForeground(true);
+            stopSelf();
+            return Service.START_NOT_STICKY;
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
-
 
     public void sendNotification(String msg, Context context, Intent intent) {
         alarmNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -71,7 +69,7 @@ public class AlarmService extends Service {
         Notification notification = new NotificationCompat.Builder(context)
                 .setAutoCancel(false)
                 .setContentTitle(getString(R.string.app_name))
-                .setSmallIcon(R.drawable.ic_alarm)
+                .setSmallIcon(R.drawable.ic_action_alarms_select)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)

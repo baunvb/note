@@ -1,4 +1,4 @@
-package com.baunvb.note.adapter;
+package com.baunvb.note.custom.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
+import com.baunvb.note.activity.activity.MainActivity;
+import com.baunvb.note.db.DatabaseManager;
+import com.baunvb.note.model.Photo;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -37,11 +40,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
     }
 
     @Override
-    public void onBindViewHolder(final PhotoHolder holder, final int position) {
+    public void onBindViewHolder(PhotoHolder holder, final int position) {
         final File imgFile = new File(photos.get(position));
-        Bitmap bmPhoto = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        //holder.iv_create_note_photo.setImageBitmap(bmPhoto);
-        Picasso.with(context).load(imgFile).into(holder.iv_create_note_photo);
+        Bitmap bmPhoto = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imgFile.getAbsolutePath()), 500, 500 );
+        //Picasso.with(context).load(imgFile).into(holder.iv_create_note_photo);
+        holder.iv_create_note_photo.setImageBitmap(bmPhoto);
         holder.btn_create_note_close_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +56,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         photos.remove(position);
-                                        notifyDataSetChanged();
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, photos.size());
                                         dialog.dismiss();
                                     }
                                 })

@@ -1,4 +1,4 @@
-package com.baunvb.note.fragments;
+package com.baunvb.note.activity.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,14 +32,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.baunvb.note.MainActivity;
 import com.baunvb.note.R;
-import com.baunvb.note.adapter.PhotoAdapter;
-import com.baunvb.note.database.Database;
-import com.baunvb.note.dialog.InsertPictureDialog;
-import com.baunvb.note.dialog.PickColorDialog;
-import com.baunvb.note.model.Note;
+import com.baunvb.note.activity.activity.MainActivity;
+import com.baunvb.note.custom.adapter.PhotoAdapter;
+import com.baunvb.note.custom.dialog.InsertPictureDialog;
+import com.baunvb.note.custom.dialog.PickColorDialog;
+import com.baunvb.note.db.DatabaseManager;
 import com.baunvb.note.service.AlarmService;
 
 import java.io.File;
@@ -50,14 +50,13 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
  * Created by Baunvb on 4/17/2017.
  */
 
-public abstract class FormNoteFragment extends Fragment implements View.OnClickListener,
+public abstract class BaseFragment extends Fragment implements View.OnClickListener,
         PickColorDialog.PickerColorDialogListener,
         InsertPictureDialog.InsertPictureDialogListener {
 
@@ -71,10 +70,15 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
 
     public static final int CAMERA_REQUEST_CODE = 2;
     public static final int GALLERY_REQUEST_CODE = 3;
+    private static final String PHOTO_PATHS = "photoPaths";
+    private static final String TITLE = "title";
+    private static final String CONTENT = "content";
+    private static final String COLOR = "color";
+    private static final String ALARM = "alarm";
 
     protected View view;
     protected LinearLayout llBack;
-    protected ImageView ivMore;
+    protected ImageView ivSetting;
     protected ImageView ivCamera;
     protected ImageView ivColor;
     protected ImageView ivSave;
@@ -95,13 +99,13 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     protected LinearLayout layoutCreateNote;
 
     protected int position;
-    protected ArrayList<Note> listNote;
-    protected Note currentNote;
-    protected Database database;
+    protected ArrayList<com.baunvb.note.model.Note> listNote;
+    protected com.baunvb.note.model.Note currentNote;
+    protected DatabaseManager database;
 
     protected String color = PINK;
     protected boolean isAlarm;
-    protected ArrayList<String> photos = new ArrayList<String>();
+    protected ArrayList<String> photoPaths = new ArrayList<String>();
     protected LinearLayoutManager layoutManager;
     protected PhotoAdapter photoAdapter;
 
@@ -114,10 +118,10 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
 
         @Override
-        public void onDateSet(DatePicker view, int year, int PhotoOfYear,
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfPhoto) {
             myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, PhotoOfYear);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfPhoto);
             setDate();
         }
@@ -140,12 +144,12 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
                     break;
                 case R.id.iv_create_note_camera:
                     InsertPictureDialog pictureDialog = new InsertPictureDialog(getActivity());
-                    pictureDialog.setListener(FormNoteFragment.this);
+                    pictureDialog.setListener(BaseFragment.this);
                     pictureDialog.show();
                     break;
                 case R.id.iv_create_note_color:
                     PickColorDialog colorDialog = new PickColorDialog(getActivity());
-                    colorDialog.setListener(FormNoteFragment.this);
+                    colorDialog.setmListener(BaseFragment.this);
                     colorDialog.show();
                     break;
                 case R.id.iv_create_note_save:
@@ -183,6 +187,8 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         }
 
     };
+    private boolean isConnected;
+    private ServiceConnection serviceConnection;
 
     public int getIdNote() {
         return id;
@@ -191,8 +197,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        connectService();
+        //connectService();
     }
 
     protected abstract int getLayout();
@@ -206,23 +211,43 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null){
+            photoPaths = savedInstanceState.getStringArrayList(PHOTO_PATHS);
+            photoAdapter = new PhotoAdapter(getActivity(), photoPaths);
+            lvPhoto.setAdapter(photoAdapter);
+            edtTitle.setText(savedInstanceState.getString(TITLE));
+            edtContent.setText(savedInstanceState.getString(CONTENT));
+            isAlarm = savedInstanceState.getBoolean(ALARM);
+            color = savedInstanceState.getString(COLOR);
+            layoutCreateNote.setBackgroundColor(Color.parseColor(color));
+
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putStringArrayList(PHOTO_PATHS, photoPaths);
+        outState.putString(TITLE, edtTitle.getText().toString());
+        outState.putString(CONTENT, edtContent.getText().toString());
+        outState.putBoolean(ALARM, isAlarm);
+        outState.putString(COLOR, color);
     }
 
     protected abstract void fillData();
 
     public void initViews() {
-        isAlarm = false;
         myCalendar = Calendar.getInstance();
-        database = new Database(getActivity());
+        database = new DatabaseManager(getActivity());
 
         lvPhoto = (RecyclerView) view.findViewById(R.id.lvPhoto);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         lvPhoto.setLayoutManager(layoutManager);
-        photos.clear();
-        photoAdapter = new PhotoAdapter(getActivity(), photos);
+        photoPaths.clear();
+        photoAdapter = new PhotoAdapter(getActivity(), photoPaths);
         lvPhoto.setAdapter(photoAdapter);
 
         edtContent = (EditText) view.findViewById(R.id.edt_create_note_content);
@@ -263,15 +288,17 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         ivSave = (ImageView) view.findViewById(R.id.iv_create_note_save);
         ivSave.setOnClickListener(listener);
 
-        ivMore = (ImageView) view.findViewById(R.id.iv_create_note_more);
-        ivMore.setVisibility(View.GONE);
+        ivSetting = (ImageView) view.findViewById(R.id.iv_create_note_more);
+        ivSetting.setVisibility(View.GONE);
 
         tvDate = (TextView) view.findViewById(R.id.tv_create_note_date);
-        tvDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        tvDate.setText((myCalendar.get(Calendar.DAY_OF_MONTH) + 1) + "/"
+                       +(myCalendar.get(Calendar.MONTH) + 1) + "/"
+                       +myCalendar.get(Calendar.YEAR));
         tvTime = (TextView) view.findViewById(R.id.tv_create_note_time);
-        tvTime.setText(new SimpleDateFormat("HH:mm").format(new Date()));
-        tvAlarm = (TextView) view.findViewById(R.id.tv_create_note_alarm);
+        tvTime.setText(getString(R.string.default_time));
 
+        tvAlarm = (TextView) view.findViewById(R.id.tv_create_note_alarm);
         ivAlarm = (ImageView) view.findViewById(R.id.iv_create_note_open_alarm);
         ivAlarm.setOnClickListener(listener);
         ivAlarm.setImageLevel(0);
@@ -305,7 +332,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 MainActivity mainActivity = (MainActivity) getActivity();
-                                mainActivity.getDatabase().delete(id);
+                                mainActivity.getDatabase().deleteNote(id);
                                 ((MainActivity) getActivity()).showListNoteFragment();
                                 dialog.dismiss();
                             }
@@ -325,6 +352,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         isAlarm = false;
         ivAlarm.setImageLevel(0);
         tvAlarm.setVisibility(View.VISIBLE);
+        Toast.makeText(getActivity(), getString(R.string.turn_off_alarm), Toast.LENGTH_SHORT).show();
     }
 
     private void openAlarm() {
@@ -333,9 +361,11 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         if (!isAlarm) {
             ivAlarm.setImageLevel(1);
             isAlarm = true;
+            Toast.makeText(getActivity(), getString(R.string.turn_on_alarm), Toast.LENGTH_SHORT).show();
         } else {
             ivAlarm.setImageLevel(0);
             isAlarm = false;
+            Toast.makeText(getActivity(), getString(R.string.turn_off_alarm), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -346,9 +376,6 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         }
         return listPaths;
     }
-
-    private boolean isConnected;
-    private ServiceConnection serviceConnection;
 
     public void connectService() {
         serviceConnection = new ServiceConnection() {
@@ -370,7 +397,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onStop() {
         super.onStop();
-        if (isConnected){
+        if (isConnected) {
             getActivity().unbindService(serviceConnection);
             isConnected = false;
         }
@@ -406,11 +433,11 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onInsertListener(int typeInsert) {
         switch (typeInsert) {
-            case FormNoteFragment.TAKE_PHOTO:
+            case BaseFragment.TAKE_PHOTO:
                 Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 super.startActivityForResult(intentCamera, CAMERA_REQUEST_CODE);
                 break;
-            case FormNoteFragment.CHOOSE_PHOTO:
+            case BaseFragment.CHOOSE_PHOTO:
                 Intent intentGallery = new Intent();
                 intentGallery.setAction(Intent.ACTION_GET_CONTENT);
                 intentGallery.setType("image/*");
@@ -423,22 +450,24 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_REQUEST_CODE) {
                 Uri selectedImageUri = data.getData();
                 String newPath = saveToInternalStorage(selectedImageUri);
-                photos.add(newPath);
-                photoAdapter.notifyDataSetChanged();
+                //photoPaths.add(new Photo(id, newPath));
+                photoPaths.add(newPath);
+                photoAdapter.notifyItemInserted(photoPaths.size()-1);
             }
 
-            if (requestCode == GALLERY_REQUEST_CODE){
+            if (requestCode == GALLERY_REQUEST_CODE) {
                 try {
                     Uri selectedImageUri = data.getData();
                     String newPath = saveToInternalStorage(selectedImageUri);
-                    photos.add(newPath);
-                    photoAdapter.notifyDataSetChanged();
-                } catch (Exception e){
+                    //photoPaths.add(new Photo(saveNote(), newPath));
+                    photoPaths.add(newPath);
+                    photoAdapter.notifyItemInserted(photoPaths.size()-1);
+                } catch (Exception e) {
 
                 }
             }
@@ -448,7 +477,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     private String saveToInternalStorage(Uri uri) {
         String path = getRealPathFromURI(uri);
         File fileSrc = new File(path);
-        String fileName = path.substring(path.lastIndexOf("/")+1);
+        String fileName = path.substring(path.lastIndexOf("/") + 1);
         String pathImage = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/" + Environment.DIRECTORY_PICTURES
                 + "/" + fileName;
@@ -466,7 +495,7 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
     }
 
     private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
@@ -477,7 +506,6 @@ public abstract class FormNoteFragment extends Fragment implements View.OnClickL
         if (!sourceFile.exists()) {
             return;
         }
-
         FileChannel source = null;
         FileChannel destination = null;
         source = new FileInputStream(sourceFile).getChannel();

@@ -14,9 +14,8 @@ public class Note {
     private String color;
     private int alarm;
     private String time;
-    private ArrayList<String> photo;
 
-    public Note(int id, String title, String content, String date, String time, String color, int alarm, ArrayList<String> photo) {
+    public Note(int id, String title, String content, String date, String time, String color, int alarm) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -24,17 +23,15 @@ public class Note {
         this.time = time;
         this.color = color;
         this.alarm = alarm;
-        this.photo = photo;
     }
 
-    public Note(String title, String content, String date, String time, String color, int alarm, ArrayList<String> photo) {
+    public Note(String title, String content, String date, String time, String color, int alarm) {
         this.title = title;
         this.content = content;
         this.date = date;
         this.time = time;
         this.color = color;
         this.alarm = alarm;
-        this.photo = photo;
     }
 
     public int getId() {
@@ -93,11 +90,4 @@ public class Note {
         this.time = time;
     }
 
-    public ArrayList<String> getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(ArrayList<String> photo) {
-        this.photo = photo;
-    }
 }

@@ -1,4 +1,4 @@
-package com.baunvb.note.dialog;
+package com.baunvb.note.custom.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,18 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.baunvb.note.R;
-import com.baunvb.note.fragments.CreateNoteFragment;
+import com.baunvb.note.activity.fragments.CreateNoteFragment;
 
 /**
  * Created by Baunvb on 4/17/2017.
  */
 
 public class InsertPictureDialog extends Dialog implements View.OnClickListener {
-    private  Context context;
+    private  Context mContext;
     private LinearLayout llCamera;
     private LinearLayout llGallery;
 
@@ -29,7 +28,7 @@ public class InsertPictureDialog extends Dialog implements View.OnClickListener 
 
     public InsertPictureDialog(Context context) {
         super(context);
-        this.context = context;
+        mContext = context;
     }
 
     @Override

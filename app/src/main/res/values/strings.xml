@@ -15,4 +15,7 @@
     <string name="no_label">No</string>
     <string name="share_label">Share with</string>
     <string name="request_permission_label">Please enable permission</string>
+    <string name="default_time">9:00</string>
+    <string name="turn_on_alarm">Alarm has been turned on</string>
+    <string name="turn_off_alarm">Alarm has been turned off</string>
 </resources>

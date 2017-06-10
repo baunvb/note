@@ -1,4 +1,4 @@
-package com.baunvb.note.fragments;
+package com.baunvb.note.activity.fragments;
 
 /**
  * Created by Baunvb on 4/17/2017.
@@ -6,23 +6,20 @@ package com.baunvb.note.fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
-import com.baunvb.note.MainActivity;
+import com.baunvb.note.activity.activity.MainActivity;
 import com.baunvb.note.R;
+import com.baunvb.note.model.Photo;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class EditNoteFragment extends FormNoteFragment{
+public class EditNoteFragment extends BaseFragment {
 
     private ImageView ivPrevious;
     private ImageView ivNext;
@@ -37,7 +34,6 @@ public class EditNoteFragment extends FormNoteFragment{
     @Override
     public void onPause() {
         super.onPause();
-        saveNote();
     }
 
     @Override
@@ -51,14 +47,14 @@ public class EditNoteFragment extends FormNoteFragment{
         ivShare = (ImageView) view.findViewById(R.id.iv_share);
         ivShare.setOnClickListener(this);
         super.initViews();
-        ivMore.setVisibility(View.VISIBLE);
-        ivMore.setOnClickListener(this);
+        ivSetting.setVisibility(View.VISIBLE);
+        ivSetting.setOnClickListener(this);
     }
 
     @Override
     protected void fillData() {
         photoAdapter.notifyDataSetChanged();
-        listNote = ((MainActivity)getActivity()).getDatabase().getAll();
+        listNote = ((MainActivity)getActivity()).getDatabase().getAllNotes();
         ivPrevious.setFocusable(true);
         ivPrevious.setImageLevel(1);
         ivNext.setFocusable(true);
@@ -66,7 +62,7 @@ public class EditNoteFragment extends FormNoteFragment{
 
         if ((position == listNote.size() - 1) ){
             ivNext.setImageLevel(0);
-            ivAlarm.setFocusable(false);
+            ivNext.setFocusable(false);
         }
         if (position == 0){
             ivPrevious.setImageLevel(0);
@@ -80,24 +76,25 @@ public class EditNoteFragment extends FormNoteFragment{
         layoutCreateNote.setBackgroundColor(Color.parseColor(currentNote.getColor()));
         ivAlarm.setImageLevel(currentNote.getAlarm());
 
-        ArrayList<String> currentPhotos = currentNote.getPhoto();
-        if (currentPhotos != null){
-            for (int i = 0; i < currentPhotos.size() -1; i++){
-                File imgFile = new File(currentPhotos.get(position));
-                if (!imgFile.exists()){
-                    currentPhotos.remove(i);
+        ArrayList<Photo> listPhotos = new ArrayList<>();
+        listPhotos = database.getAllPhotos(currentNote.getId());
+        photoPaths.clear();
+        if (listPhotos.size() > 0) {
+            for (int i = 0; i < listPhotos.size(); i++) {
+                File imgFile = new File(listPhotos.get(i).getPath());
+                if (!imgFile.exists()) {
+                    listPhotos.remove(i);
+                } else {
+                    photoPaths.add(listPhotos.get(i).getPath());
                 }
             }
         }
-        this.photos.clear();
-        if (currentPhotos != null){
-            for (String photo : currentPhotos){
-                this.photos.add(photo);
-            }
-        }
 
-        isAlarm = false;
-        ivAlarm.setImageLevel(0);
+        if (currentNote.getAlarm() == 1){
+            isAlarm = true;
+        } else if(currentNote.getAlarm() == 0){
+            isAlarm = false;
+        }
         layoutShowDateTime.setVisibility(View.VISIBLE);
         tvDate.setText(currentNote.getDate());
         tvTime.setText(currentNote.getTime());
@@ -112,15 +109,21 @@ public class EditNoteFragment extends FormNoteFragment{
         currentNote.setColor(color);
         currentNote.setDate(tvDate.getText().toString());
         currentNote.setTime(tvTime.getText().toString());
-        currentNote.setPhoto(photos);
         String datex[] = tvDate.getText().toString().split("/");
         String timex[] = tvTime.getText().toString().split(":");
-        if (isAlarm){
-            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
-                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]),Integer.parseInt(timex[0]),
-                    Integer.parseInt(timex[1]));
+//        if (isAlarm){
+//            alarmService.setAlarmFire(id, Integer.parseInt(datex[0]),
+//                    Integer.parseInt(datex[1]), Integer.parseInt(datex[2]),Integer.parseInt(timex[0]),
+//                    Integer.parseInt(timex[1]));
+//        }
+        database.updateNote(currentNote);
+        database.deletePhoto(currentNote.getId());
+        if (photoPaths != null){
+            int size = this.photoPaths.size();
+            for (int i = 0; i < size; i++) {
+                database.insertPhoto(new Photo(currentNote.getId(), photoPaths.get(i)));
+            }
         }
-        database.update(currentNote);
         return id;
     }
 
@@ -155,7 +158,7 @@ public class EditNoteFragment extends FormNoteFragment{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_create_note_more:
-                showPopup(ivMore);
+                showPopup(ivSetting);
                 break;
             case R.id.iv_left:
                 saveNote();
