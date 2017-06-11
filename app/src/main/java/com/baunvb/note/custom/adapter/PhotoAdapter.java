@@ -19,7 +19,6 @@ import com.baunvb.note.R;
 import com.baunvb.note.activity.activity.MainActivity;
 import com.baunvb.note.db.DatabaseManager;
 import com.baunvb.note.model.Photo;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -49,7 +49,7 @@ public class AlarmService extends Service {
 
     public void sendNotification(String msg, Context context, Intent intent) {
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         intent.setAction(Constant.ACTION_STOP_SERVICE);
         PendingIntent stopPI = PendingIntent.getService(context, 0,

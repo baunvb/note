@@ -44,6 +44,7 @@ import com.baunvb.note.custom.dialog.PickColorDialog;
 import com.baunvb.note.db.DatabaseManager;
 import com.baunvb.note.service.AlarmReceiver;
 import com.baunvb.note.service.AlarmService;
+import com.baunvb.note.utils.Constant;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,11 +64,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         PickColorDialog.PickerColorDialogListener,
         InsertPictureDialog.InsertPictureDialogListener {
 
-    public static final String YELLOW = "#FFEB3B";
-    public static final String ORANGE = "#FF9800";
-    public static final String PINK = "#FCE4EC";
-    public static final String BLUE = "#90CAF9";
-
     public static final int TAKE_PHOTO = 0;
     public static final int CHOOSE_PHOTO = 1;
 
@@ -78,6 +74,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     private static final String CONTENT = "content";
     private static final String COLOR = "color";
     private static final String ALARM = "alarm";
+    private static final String ROOT_DIRECTORY = "Notes" ;
 
     protected View view;
     protected LinearLayout llBack;
@@ -106,7 +103,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected com.baunvb.note.model.Note currentNote;
     protected DatabaseManager database;
 
-    protected String color = PINK;
+    protected String color = Constant.PINK;
     protected boolean isAlarm;
     protected ArrayList<String> photoPaths = new ArrayList<String>();
     protected LinearLayoutManager layoutManager;
@@ -448,12 +445,15 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     }
 
     private String saveToInternalStorage(Uri uri) {
-        String path = getRealPathFromURI(uri);
-        File fileSrc = new File(path);
-        String fileName = path.substring(path.lastIndexOf("/") + 1);
-        String pathImage = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/" + Environment.DIRECTORY_PICTURES
-                + "/" + fileName;
+        File directory = new File(Environment.getExternalStorageDirectory()+File.separator + ROOT_DIRECTORY);
+        if (!directory.exists()){
+            directory.mkdirs();
+        }
+        String pathSrc = getRealPathFromURI(uri);
+        File fileSrc = new File(pathSrc);
+        String fileName = pathSrc.substring(pathSrc.lastIndexOf("/") + 1);
+
+        String pathImage = Environment.getExternalStorageDirectory().getAbsoluteFile()+ "/" + ROOT_DIRECTORY + "/" + fileName;
         File fileDes = new File(pathImage);
         if (fileDes.exists()) {
             fileDes.delete();

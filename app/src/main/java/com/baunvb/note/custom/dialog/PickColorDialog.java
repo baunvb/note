@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.baunvb.note.R;
 import com.baunvb.note.activity.fragments.CreateNoteFragment;
+import com.baunvb.note.utils.Constant;
 
 /**
  * Created by Baunvb on 4/17/2017.
@@ -66,19 +67,19 @@ public class PickColorDialog extends Dialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_color_blue:
-                mListener.onSelectColorListener(CreateNoteFragment.BLUE);
+                mListener.onSelectColorListener(Constant.BLUE);
                 this.dismiss();
                 break;
             case R.id.iv_color_pink:
-                mListener.onSelectColorListener(CreateNoteFragment.PINK);
+                mListener.onSelectColorListener(Constant.PINK);
                 this.dismiss();
                 break;
             case R.id.iv_color_orange:
-                mListener.onSelectColorListener(CreateNoteFragment.ORANGE);
+                mListener.onSelectColorListener(Constant.ORANGE);
                 this.dismiss();
                 break;
             case R.id.iv_color_yellow:
-                mListener.onSelectColorListener(CreateNoteFragment.YELLOW);
+                mListener.onSelectColorListener(Constant.YELLOW);
                 this.dismiss();
                 break;
             default:

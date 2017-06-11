@@ -16,7 +16,5 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         intent.setAction(Constant.ACTION_START_SERVICE);
         ComponentName comp = new ComponentName(context.getPackageName(), AlarmService.class.getName());
         startWakefulService(context, (intent.setComponent(comp)));
-        setResultCode(Activity.RESULT_OK);
     }
-
 }

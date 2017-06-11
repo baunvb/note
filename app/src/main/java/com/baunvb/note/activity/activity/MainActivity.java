@@ -1,5 +1,6 @@
 package com.baunvb.note.activity.activity;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -43,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestPermission();
         if (null == savedInstanceState){
             showListNoteFragment();
         }
-        requestPermission();
     }
 
     public void showListNoteFragment() {
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         mCreateNoteFragment = null;
         mEditNoteFragment = null;
     }
-
 
     public void showCreateNoteFragment() {
         if (mCreateNoteFragment == null) {

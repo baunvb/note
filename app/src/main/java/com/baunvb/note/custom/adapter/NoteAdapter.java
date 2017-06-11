@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.baunvb.note.R;
 import com.baunvb.note.activity.fragments.CreateNoteFragment;
 import com.baunvb.note.model.Note;
+import com.baunvb.note.utils.Constant;
 
 import java.util.ArrayList;
 
@@ -60,16 +61,16 @@ public class NoteAdapter extends RecyclerView.Adapter{
 
         String color = note.getColor();
         switch (color){
-            case CreateNoteFragment.BLUE:
+            case Constant.BLUE:
                 noteHolder.layout.setBackgroundResource(R.drawable.bg_item_note_blue);
                 break;
-            case CreateNoteFragment.ORANGE:
+            case Constant.ORANGE:
                 noteHolder.layout.setBackgroundResource(R.drawable.bg_item_note_orange);
                 break;
-            case CreateNoteFragment.PINK:
+            case Constant.PINK:
                 noteHolder.layout.setBackgroundResource(R.drawable.bg_item_note_pink);
                 break;
-            case CreateNoteFragment.YELLOW:
+            case Constant.YELLOW:
                 noteHolder.layout.setBackgroundResource(R.drawable.bg_item_note_yellow);
                 break;
         }
