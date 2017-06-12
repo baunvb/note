@@ -5,13 +5,13 @@
     android:layout_marginLeft="4dp">
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/iv_create_note_photo"
+        android:id="@+id/iv_item_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
     <Button
-        android:id="@+id/btn_create_note_close_photo"
+        android:id="@+id/btn_close_photo"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"

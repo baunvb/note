@@ -154,7 +154,7 @@ public class EditNoteFragment extends BaseFragment {
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.iv_create_note_more:
+            case R.id.iv_setting:
                 showPopup(ivSetting);
                 break;
             case R.id.iv_left:

@@ -142,17 +142,17 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                 case R.id.ll_back:
                     ((MainActivity) getActivity()).showListNoteFragment();
                     break;
-                case R.id.iv_create_note_camera:
+                case R.id.iv_camera:
                     InsertPictureDialog pictureDialog = new InsertPictureDialog(getActivity());
                     pictureDialog.setListener(BaseFragment.this);
                     pictureDialog.show();
                     break;
-                case R.id.iv_create_note_color:
+                case R.id.iv_color:
                     PickColorDialog colorDialog = new PickColorDialog(getActivity());
                     colorDialog.setmListener(BaseFragment.this);
                     colorDialog.show();
                     break;
-                case R.id.iv_create_note_save:
+                case R.id.iv_save:
                     saveNote();
                     ((MainActivity) getActivity()).showListNoteFragment();
                     break;
@@ -160,11 +160,11 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                     openAlarm();
                     break;
 
-                case R.id.btn_create_note_close_alarm:
+                case R.id.btn_close_alarm:
                     closeAlarm();
                     break;
 
-                case R.id.btn_create_note_date_picker:
+                case R.id.btn_date_picker:
                     new DatePickerDialog(getActivity(),
                             dateListener,
                             myCalendar.get(Calendar.YEAR),
@@ -172,7 +172,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                             myCalendar.get(Calendar.DAY_OF_MONTH))
                             .show();
                     break;
-                case R.id.btn_create_note_time_picker:
+                case R.id.btn__time_picker:
                     new TimePickerDialog(getActivity(),
                             timeListener,
                             myCalendar.get(Calendar.HOUR),
@@ -241,7 +241,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         myCalendar = Calendar.getInstance();
         database = new DatabaseManager(getActivity());
 
-        lvPhoto = (RecyclerView) view.findViewById(R.id.lvPhoto);
+        lvPhoto = (RecyclerView) view.findViewById(R.id.lv_photo);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         lvPhoto.setLayoutManager(layoutManager);
@@ -249,9 +249,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         photoAdapter = new PhotoAdapter(getActivity(), photoPaths);
         lvPhoto.setAdapter(photoAdapter);
 
-        edtContent = (EditText) view.findViewById(R.id.edt_create_note_content);
+        edtContent = (EditText) view.findViewById(R.id.et_content);
         edtContent.setText("");
-        edtTitle = (EditText) view.findViewById(R.id.edt_create_note_title);
+        edtTitle = (EditText) view.findViewById(R.id.et_title);
         edtTitle.setText("");
         edtTitle.addTextChangedListener(new TextWatcher() {
             @Override
@@ -278,37 +278,37 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         llBack = (LinearLayout) view.findViewById(R.id.ll_back);
         llBack.setOnClickListener(listener);
 
-        ivCamera = (ImageView) view.findViewById(R.id.iv_create_note_camera);
+        ivCamera = (ImageView) view.findViewById(R.id.iv_camera);
         ivCamera.setOnClickListener(listener);
 
-        ivColor = (ImageView) view.findViewById(R.id.iv_create_note_color);
+        ivColor = (ImageView) view.findViewById(R.id.iv_color);
         ivColor.setOnClickListener(listener);
 
-        ivSave = (ImageView) view.findViewById(R.id.iv_create_note_save);
+        ivSave = (ImageView) view.findViewById(R.id.iv_save);
         ivSave.setOnClickListener(listener);
 
-        ivSetting = (ImageView) view.findViewById(R.id.iv_create_note_more);
+        ivSetting = (ImageView) view.findViewById(R.id.iv_setting);
         ivSetting.setVisibility(View.GONE);
 
-        tvDate = (TextView) view.findViewById(R.id.tv_create_note_date);
+        tvDate = (TextView) view.findViewById(R.id.tv_date);
         tvDate.setText((myCalendar.get(Calendar.DAY_OF_MONTH) + 1) + "/"
                        +(myCalendar.get(Calendar.MONTH) + 1) + "/"
                        +myCalendar.get(Calendar.YEAR));
-        tvTime = (TextView) view.findViewById(R.id.tv_create_note_time);
+        tvTime = (TextView) view.findViewById(R.id.tv_time);
         tvTime.setText(getString(R.string.default_time));
 
-        tvAlarm = (TextView) view.findViewById(R.id.tv_create_note_alarm);
+        tvAlarm = (TextView) view.findViewById(R.id.tv_alarm);
         ivAlarm = (ImageView) view.findViewById(R.id.iv_create_note_open_alarm);
         ivAlarm.setOnClickListener(listener);
         ivAlarm.setImageLevel(0);
 
-        btnCloseAlarm = (Button) view.findViewById(R.id.btn_create_note_close_alarm);
+        btnCloseAlarm = (Button) view.findViewById(R.id.btn_close_alarm);
         btnCloseAlarm.setOnClickListener(listener);
 
-        btnDatePicker = (Button) view.findViewById(R.id.btn_create_note_date_picker);
+        btnDatePicker = (Button) view.findViewById(R.id.btn_date_picker);
         btnDatePicker.setOnClickListener(listener);
 
-        btnTimePicker = (Button) view.findViewById(R.id.btn_create_note_time_picker);
+        btnTimePicker = (Button) view.findViewById(R.id.btn__time_picker);
         btnTimePicker.setOnClickListener(listener);
 
         layoutShowDateTime = (LinearLayout) view.findViewById(R.id.layout_create_note_show_date_time);

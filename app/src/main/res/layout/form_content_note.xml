@@ -12,12 +12,12 @@
         android:padding="8dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/lvPhoto"
+            android:id="@+id/lv_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/edt_create_note_title"
+            android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/title"
@@ -26,7 +26,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edt_create_note_content"
+            android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/content"
@@ -47,7 +47,7 @@
                 android:src="@drawable/bg_btn_alarm" />
 
             <TextView
-                android:id="@+id/tv_create_note_alarm"
+                android:id="@+id/tv_alarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -71,7 +71,7 @@
                     android:layout_weight="3">
 
                     <TextView
-                        android:id="@+id/tv_create_note_date"
+                        android:id="@+id/tv_date"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="8dp"
@@ -81,7 +81,7 @@
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/btn_create_note_date_picker"
+                        android:id="@+id/btn_date_picker"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
@@ -98,7 +98,7 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:id="@+id/tv_create_note_time"
+                        android:id="@+id/tv_time"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
@@ -110,7 +110,7 @@
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/btn_create_note_time_picker"
+                        android:id="@+id/btn__time_picker"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
@@ -120,9 +120,8 @@
 
                 </RelativeLayout>
 
-
                 <Button
-                    android:id="@+id/btn_create_note_close_alarm"
+                    android:id="@+id/btn_close_alarm"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"

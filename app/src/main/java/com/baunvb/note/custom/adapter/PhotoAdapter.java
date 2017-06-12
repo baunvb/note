@@ -92,8 +92,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
         public PhotoHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            iv_create_note_photo = (AppCompatImageView) itemView.findViewById(R.id.iv_create_note_photo);
-            btn_create_note_close_photo = (Button) itemView.findViewById(R.id.btn_create_note_close_photo);
+            iv_create_note_photo = (AppCompatImageView) itemView.findViewById(R.id.iv_item_photo);
+            btn_create_note_close_photo = (Button) itemView.findViewById(R.id.btn_close_photo);
         }
     }
 
