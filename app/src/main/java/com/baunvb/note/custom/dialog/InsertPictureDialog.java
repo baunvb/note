@@ -55,11 +55,11 @@ public class InsertPictureDialog extends Dialog implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_dialog_insert_picture_camera:
-                listener.onInsertListener(CreateNoteFragment.TAKE_PHOTO);
+                listener.onInsertListener(CreateNoteFragment.TAKE_PHOTO_CODE);
                 this.dismiss();
                 break;
             case R.id.ll_dialog_insert_picture_gallery:
-                listener.onInsertListener(CreateNoteFragment.CHOOSE_PHOTO);
+                listener.onInsertListener(CreateNoteFragment.CHOOSE_PHOTO_CODE);
                 this.dismiss();;
                 break;
 

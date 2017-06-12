@@ -14,7 +14,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.baunvb.note.R;
 import com.baunvb.note.activity.fragments.CreateNoteFragment;
-import com.baunvb.note.activity.fragments.BaseFragment;
+import com.baunvb.note.activity.base.BaseFragment;
 import com.baunvb.note.utils.Constant;
 
 public class AlarmService extends Service {

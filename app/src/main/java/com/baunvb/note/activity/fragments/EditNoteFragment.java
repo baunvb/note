@@ -1,9 +1,5 @@
 package com.baunvb.note.activity.fragments;
 
-/**
- * Created by Baunvb on 4/17/2017.
- */
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.MenuInflater;
@@ -12,8 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
-import com.baunvb.note.activity.activity.MainActivity;
+import com.baunvb.note.activity.MainActivity;
 import com.baunvb.note.R;
+import com.baunvb.note.activity.base.BaseFragment;
 import com.baunvb.note.model.Photo;
 
 import java.io.File;

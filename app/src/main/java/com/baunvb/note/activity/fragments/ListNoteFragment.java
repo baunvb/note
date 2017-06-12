@@ -12,17 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baunvb.note.activity.activity.MainActivity;
+import com.baunvb.note.activity.MainActivity;
 import com.baunvb.note.R;
 import com.baunvb.note.custom.adapter.NoteAdapter;
 import com.baunvb.note.db.DatabaseManager;
 import com.baunvb.note.model.Note;
 
 import java.util.ArrayList;
-
-/**
- * Created by Baunvb on 4/17/2017.
- */
 
 public class ListNoteFragment extends Fragment implements View.OnClickListener, NoteAdapter.OnItemNoteClickListener {
     private View view;

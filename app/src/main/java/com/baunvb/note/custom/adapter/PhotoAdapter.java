@@ -16,9 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.baunvb.note.R;
-import com.baunvb.note.activity.activity.MainActivity;
-import com.baunvb.note.db.DatabaseManager;
-import com.baunvb.note.model.Photo;
 
 import java.io.File;
 import java.util.ArrayList;

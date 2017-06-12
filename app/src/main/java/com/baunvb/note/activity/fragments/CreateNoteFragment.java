@@ -4,10 +4,10 @@ package com.baunvb.note.activity.fragments;
  * Created by Baunvb on 4/17/2017.
  */
 
-import android.util.Log;
 import android.view.View;
 
 import com.baunvb.note.R;
+import com.baunvb.note.activity.base.BaseFragment;
 import com.baunvb.note.model.Note;
 import com.baunvb.note.model.Photo;
 
