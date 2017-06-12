@@ -2,17 +2,16 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <selector xmlns:android="http://schemas.android.com/apk/res/android">
-            <item
-                android:state_pressed="true">
+            <item android:state_pressed="true">
                 <shape android:shape="rectangle">
-                    <solid android:color="#e3f2fd"/>
+                    <solid android:color="#e3f2fd" />
 
                 </shape>
             </item>
 
             <item>
                 <shape android:shape="rectangle">
-                    <solid android:color="@color/blue"/>
+                    <solid android:color="@color/blue" />
 
                 </shape>
             </item>

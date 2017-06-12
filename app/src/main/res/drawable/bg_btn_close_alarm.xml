@@ -21,9 +21,8 @@
 
     <item>
         <bitmap
-            android:src="@drawable/ic_action_cancel"
-            android:gravity="center">
-        </bitmap>
+            android:gravity="center"
+            android:src="@drawable/ic_action_cancel"></bitmap>
     </item>
 
 </layer-list>

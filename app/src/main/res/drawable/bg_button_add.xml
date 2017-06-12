@@ -2,17 +2,16 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <selector xmlns:android="http://schemas.android.com/apk/res/android">
-            <item
-                android:state_pressed="true">
+            <item android:state_pressed="true">
                 <shape android:shape="rectangle">
-                    <solid android:color="#90CAF9"/>
+                    <solid android:color="#90CAF9" />
 
                 </shape>
             </item>
 
             <item>
                 <shape android:shape="rectangle">
-                    <solid android:color="@color/actionbar_color"/>
+                    <solid android:color="@color/actionbar_color" />
 
                 </shape>
             </item>
@@ -21,9 +20,8 @@
     </item>
     <item>
         <bitmap
-            android:src="@drawable/ic_action_new"
-            android:gravity="center">
-        </bitmap>
+            android:gravity="center"
+            android:src="@drawable/ic_action_new"></bitmap>
     </item>
 
 </layer-list>

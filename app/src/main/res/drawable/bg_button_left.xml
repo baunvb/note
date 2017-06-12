@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:maxLevel="0">
+    <item android:maxLevel="0">
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             <item>
                 <selector xmlns:android="http://schemas.android.com/apk/res/android">
                     <item>
                         <shape android:shape="rectangle">
-                            <solid android:color="@color/actionbar_color"/>
+                            <solid android:color="@color/actionbar_color" />
 
                         </shape>
                     </item>
@@ -16,31 +15,28 @@
             </item>
             <item>
                 <bitmap
-                    android:src="@drawable/ic_action_previous_disenable_item"
-                    android:gravity="center">
-                </bitmap>
+                    android:gravity="center"
+                    android:src="@drawable/ic_action_previous_disenable_item"></bitmap>
             </item>
 
         </layer-list>
 
     </item>
 
-    <item
-        android:maxLevel="1">
+    <item android:maxLevel="1">
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             <item>
                 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-                    <item
-                        android:state_pressed="true">
+                    <item android:state_pressed="true">
                         <shape android:shape="rectangle">
-                            <solid android:color="#90CAF9"/>
+                            <solid android:color="#90CAF9" />
 
                         </shape>
                     </item>
 
                     <item>
                         <shape android:shape="rectangle">
-                            <solid android:color="@color/actionbar_color"/>
+                            <solid android:color="@color/actionbar_color" />
 
                         </shape>
                     </item>
@@ -49,9 +45,8 @@
             </item>
             <item>
                 <bitmap
-                    android:src="@drawable/ic_action_previous_item"
-                    android:gravity="center">
-                </bitmap>
+                    android:gravity="center"
+                    android:src="@drawable/ic_action_previous_item"></bitmap>
             </item>
 
         </layer-list>
