@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import com.baunvb.note.db.DatabaseManager;
 import com.baunvb.note.service.AlarmReceiver;
 import com.baunvb.note.utils.Constant;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -426,8 +428,10 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_REQUEST_CODE) {
-                Uri selectedImageUri = data.getData();
-                String newPath = saveToInternalStorage(selectedImageUri);
+                //Uri selectedImageUri = data.getData();
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Uri tempUri = getImageUri(getActivity(), photo);
+                String newPath = saveToInternalStorage(tempUri);
                 photoPaths.add(newPath);
                 photoAdapter.notifyItemInserted(photoPaths.size()-1);
             }
@@ -443,6 +447,13 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                 }
             }
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     private String saveToInternalStorage(Uri uri) {
@@ -497,7 +508,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     public void setAlarmFire(int id, int day, int month, int year, int hour, int minute) {
         pendingIntent = PendingIntent.getBroadcast(getActivity(), id, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
