@@ -35,9 +35,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private SQLiteDatabase db;
 
 
-    private static final String CREATE_TABLE_NOTE = "create table "
+    private static final String CREATE_TABLE_NOTE = "CREATE TABLE "
             + TABLE_NOTES + "( "
-            + ID + " integer primary key autoincrement, "
+            + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + TITLE + " text, "
             + CONTENT +" text, "
             + DATE + " text, "
@@ -47,8 +47,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_PHOTO = "CREATE TABLE "
             + TABLE_PHOTOS + "("
-            + ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + NOTE_ID + " INTEGER NOT NULL, "
+            + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + NOTE_ID + " INTEGER, "
             + PHOTO + " text);";
 
     public DatabaseManager(Context context) {

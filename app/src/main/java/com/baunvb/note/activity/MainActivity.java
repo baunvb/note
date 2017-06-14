@@ -88,8 +88,6 @@ public class MainActivity extends BaseActivity {
                 }, REQUEST_CODE_PERMISSION);
             }
 
-        } else {
-            finish();
         }
     }
 
@@ -99,6 +97,8 @@ public class MainActivity extends BaseActivity {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+            } else {
+                finish();
             }
         } else{
             Toast.makeText(this, getString(R.string.request_permission_label), Toast.LENGTH_LONG).show();
