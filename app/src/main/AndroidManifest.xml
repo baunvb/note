@@ -30,10 +30,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.AlarmService"
-            android:enabled="true"/>
-        <receiver android:name=".service.AlarmReceiver">
-        </receiver>
+        <service android:name=".service.AlarmService"/>
+        <receiver android:name=".service.AlarmReceiver"
+            android:exported="true"/>
 
     </application>
 
