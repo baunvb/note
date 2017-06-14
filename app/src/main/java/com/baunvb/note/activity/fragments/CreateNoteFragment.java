@@ -24,7 +24,12 @@ public class CreateNoteFragment extends BaseFragment {
 
     @Override
     public int saveNote() {
-        String title = edtTitle.getText().toString();
+        String title = "";
+        if (edtTitle.getText().toString().trim().equals("")){
+            title = "Untitle";
+        } else {
+            title = edtTitle.getText().toString().trim();
+        }
         String content = edtContent.getText().toString();
         String date = tvDate.getText().toString();
         String time = tvTime.getText().toString();

@@ -101,7 +101,11 @@ public class EditNoteFragment extends BaseFragment {
     protected int saveNote() {
         int id = currentNote.getId();
         currentNote.setAlarm(getAlarm());
-        currentNote.setTitle(edtTitle.getText().toString());
+        if (edtTitle.getText().toString().trim().equals("")){
+            currentNote.setTitle("Untitle");
+        } else {
+            currentNote.setTitle(edtTitle.getText().toString());
+        }
         currentNote.setContent(edtContent.getText().toString());
         currentNote.setColor(color);
         currentNote.setDate(tvDate.getText().toString());

@@ -252,9 +252,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         lvPhoto.setAdapter(photoAdapter);
 
         edtContent = (EditText) view.findViewById(R.id.et_content);
-        edtContent.setText("");
+        edtContent.setText(null);
         edtTitle = (EditText) view.findViewById(R.id.et_title);
-        edtTitle.setText("");
+        edtTitle.setText(null);
         edtTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
