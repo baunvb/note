@@ -16,7 +16,7 @@
             <item>
                 <bitmap
                     android:gravity="center"
-                    android:src="@drawable/ic_action_previous_disenable_item"></bitmap>
+                    android:src="@mipmap/ic_action_previous_disenable_item"></bitmap>
             </item>
 
         </layer-list>
