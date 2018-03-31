@@ -1,3 +1,8 @@
-# Note
-note - assignment Mobile Communications
-ứng dụng hoạt động tốt trên máy thật android version 6.0
+
+Note - Mobile Communications
+Developed for android
+Tested on android 6.0.1
+Features:
+    - Node by text, images
+    - Alarm by service
+    - User color for each note item.
